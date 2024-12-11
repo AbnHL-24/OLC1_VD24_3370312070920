@@ -155,7 +155,7 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // INSTRUCCION ::= IMPRIMIR PARENT_IZQ EXPRESION PARENT_DER FINCADENA 
+          case 2: // INSTRUCCION ::= IMPRIMIR PARENT_IZQ EXPRESION PARENT_DER FIN_CADENA 
             {
               Object RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
@@ -167,7 +167,7 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // INSTRUCCION ::= IMPRIMIR PARENT_IZQ CADENA PARENT_DER FINCADENA 
+          case 3: // INSTRUCCION ::= IMPRIMIR PARENT_IZQ CADENA PARENT_DER FIN_CADENA 
             {
               Object RESULT =null;
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;

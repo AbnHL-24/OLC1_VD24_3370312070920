@@ -759,8 +759,8 @@ public class Analizador implements java_cup.runtime.Scanner {
           case 23: break;
           case 10:
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"char: "+yychar+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [54] { return new Symbol(sym.FINCADENA, yyline, yycolumn, yytext()); }");
-            { return new Symbol(sym.FINCADENA, yyline, yycolumn, yytext());
+            System.out.println("action [54] { return new Symbol(sym.FIN_CADENA, yyline, yycolumn, yytext()); }");
+            { return new Symbol(sym.FIN_CADENA, yyline, yycolumn, yytext());
             }
           // fall through
           case 24: break;

@@ -23,7 +23,7 @@ action code
 :}
 
 terminal String CADENA, ENTERO, DECIMAL;
-terminal FINCADENA, IMPRIMIR;
+terminal FIN_CADENA, IMPRIMIR;
 terminal MAS, MENOS, MULT, DIV, PARENT_IZQ, PARENT_DER, UMENOS;
 
 nonterminal INICIO;
@@ -45,8 +45,8 @@ INSRUCCIONES ::= INSTRUCCIONES INSTRUCCION
                 | INSTRUCCION
 ;
 
-INSTRUCCION ::= IMPRIMIR PARENT_IZQ EXPRESION:e PARENT_DER FINCADENA {: consola += e + "\n"; :}
-                | IMPRIMIR PARENT_IZQ CADENA:c PARENT_DER FINCADENA {: consola += c + "\n"; :}
+INSTRUCCION ::= IMPRIMIR PARENT_IZQ EXPRESION:e PARENT_DER FIN_CADENA {: consola += e + "\n"; :}
+                | IMPRIMIR PARENT_IZQ CADENA:c PARENT_DER FIN_CADENA {: consola += c + "\n"; :}
 ;
 
 EXPRESION ::= MENOS EXPRESION:a {: RESULT = -a; :} %prec UMENOS

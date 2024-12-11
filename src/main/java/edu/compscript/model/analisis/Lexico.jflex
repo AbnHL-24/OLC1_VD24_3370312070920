@@ -35,7 +35,7 @@ IMPRIMIR = "imprimir"
 // Símbolos del sistema.
 DECIMAL = [0-9]+"."[0-9]+
 ENTERO = [0-9]+
-FINCADENA = ";"
+FIN_CADENA = ";"
 MAS = "+"
 MENOS = "-"
 MULT = "*"
@@ -51,7 +51,7 @@ BLANCOS = [\ \r\t\f\n]+
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
 <YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
 // Simbolos
-<YYINITIAL> {FINCADENA} { return new Symbol(sym.FINCADENA, yyline, yycolumn, yytext());  }
+<YYINITIAL> {FIN_CADENA} { return new Symbol(sym.FIN_CADENA, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MULT} { return new Symbol(sym.MULT, yyline, yycolumn, yytext());  }

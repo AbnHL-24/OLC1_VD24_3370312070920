@@ -18,17 +18,17 @@ public class sym {
   public static final int MAS = 7;
   public static final int PARENT_IZQ = 11;
   public static final int DIV = 10;
-  public static final int FINCADENA = 5;
   public static final int error = 1;
   public static final int PARENT_DER = 12;
   public static final int IMPRIMIR = 6;
+  public static final int FIN_CADENA = 5;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "CADENA",
   "ENTERO",
   "DECIMAL",
-  "FINCADENA",
+  "FIN_CADENA",
   "IMPRIMIR",
   "MAS",
   "MENOS",
