@@ -35,7 +35,7 @@ IMPRIMIR = "imprimir"
 // Símbolos del sistema.
 DECIMAL = [0-9]+"."[0-9]+
 ENTERO = [0-9]+
-FIN_DE_CADENA = ";"
+FINCADENA = ";"
 MAS = "+"
 MENOS = "-"
 MULT = "*"
@@ -49,15 +49,15 @@ BLANCOS = [\ \r\t\f\n]+
 // Las palabras reservadas <NOMBRE_TOKEN, LEXEMA>.
 <YYINITIAL> {IMPRIMIR} { return new Symbol(sym.IMPRIMIR, yyline, yycolumn, yytext());  }
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
-<YYINITIAL> {ENTERO} { return new Symbol(sym.ENTEROS, yyline, yycolumn, yytext());  }
+<YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
 // Simbolos
-<YYINITIAL> {FIN_DE_CADENA} { return new Symbol(sym.FIN_DE_CADENA, yyline, yycolumn, yytext());  }
+<YYINITIAL> {FINCADENA} { return new Symbol(sym.FINCADENA, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext());  }
-<YYINITIAL> {MENOS} { return new Symbol(sym.MENO, yyline, yycolumn, yytext());  }
-<YYINITIAL> {MULT} { return new Symbol(sym.MULTIPLICACION, yyline, yycolumn, yytext());  }
-<YYINITIAL> {DIV} { return new Symbol(sym.DIVISION, yyline, yycolumn, yytext());  }
-<YYINITIAL> {PARENT_IZQ} { return new Symbol(sym.PARENTESIS_IZQ, yyline, yycolumn, yytext());  }
-<YYINITIAL> {PARENT_DER} { return new Symbol(sym.PARENTESIS_DER, yyline, yycolumn, yytext());  }
+<YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext());  }
+<YYINITIAL> {MULT} { return new Symbol(sym.MULT, yyline, yycolumn, yytext());  }
+<YYINITIAL> {DIV} { return new Symbol(sym.DIV, yyline, yycolumn, yytext());  }
+<YYINITIAL> {PARENT_IZQ} { return new Symbol(sym.PARENT_IZQ, yyline, yycolumn, yytext());  }
+<YYINITIAL> {PARENT_DER} { return new Symbol(sym.PARENT_DER, yyline, yycolumn, yytext());  }
 <YYINITIAL> {BLANCOS} {}
 
 // Moverme a estado cadena.
