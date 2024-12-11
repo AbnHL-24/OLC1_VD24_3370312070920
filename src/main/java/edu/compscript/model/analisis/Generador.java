@@ -12,7 +12,6 @@ public class Generador {
         try {
             String ruta = "src/main/java/edu/compscript/model/analisis/";
             String rutaLexico = ruta + "Lexico.jflex";
-            String rutaGenerados = ruta + "generados/";
             String rutaSintactico = ruta + "Sintactico.cup";
             /*
             Ruta del archivo de JFlex.
