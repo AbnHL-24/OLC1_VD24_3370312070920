@@ -38,10 +38,10 @@ ENTERO = [0-9]+
 FIN_DE_CADENA = ";"
 MAS = "+"
 MENOS = "-"
-MULTIPLICACION = "*"
-DIVISION = "/"
-PARENTESIS_IZQ = "("
-PARENTESIS_DER = ")"
+MULT = "*"
+DIV = "/"
+PARENT_IZQ = "("
+PARENT_DER = ")"
 BLANCOS = [\ \r\t\f\n]+
 
 %%
@@ -54,10 +54,10 @@ BLANCOS = [\ \r\t\f\n]+
 <YYINITIAL> {FIN_DE_CADENA} { return new Symbol(sym.FIN_DE_CADENA, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENO, yyline, yycolumn, yytext());  }
-<YYINITIAL> {MULTIPLICACION} { return new Symbol(sym.MULTIPLICACION, yyline, yycolumn, yytext());  }
-<YYINITIAL> {DIVISION} { return new Symbol(sym.DIVISION, yyline, yycolumn, yytext());  }
-<YYINITIAL> {PARENTESIS_IZQ} { return new Symbol(sym.PARENTESIS_IZQ, yyline, yycolumn, yytext());  }
-<YYINITIAL> {PARENTESIS_DER} { return new Symbol(sym.PARENTESIS_DER, yyline, yycolumn, yytext());  }
+<YYINITIAL> {MULT} { return new Symbol(sym.MULTIPLICACION, yyline, yycolumn, yytext());  }
+<YYINITIAL> {DIV} { return new Symbol(sym.DIVISION, yyline, yycolumn, yytext());  }
+<YYINITIAL> {PARENT_IZQ} { return new Symbol(sym.PARENTESIS_IZQ, yyline, yycolumn, yytext());  }
+<YYINITIAL> {PARENT_DER} { return new Symbol(sym.PARENTESIS_DER, yyline, yycolumn, yytext());  }
 <YYINITIAL> {BLANCOS} {}
 
 // Moverme a estado cadena.
