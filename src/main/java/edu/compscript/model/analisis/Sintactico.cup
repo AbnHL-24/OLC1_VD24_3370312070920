@@ -1,4 +1,4 @@
-package model.analisis;
+package edu.compscript.model.analisis;
 
 // Importaciones.
 import java_cup.runtime.Symbol;

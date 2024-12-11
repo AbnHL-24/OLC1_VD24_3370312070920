@@ -1,4 +1,4 @@
-package model.analisis;
+package edu.compscript.model.analisis;
 
 //importaciones
 import java_cup.runtime.Symbol;
@@ -17,7 +17,7 @@ import java_cup.runtime.Symbol;
 
 // Definiciones de caracterisitca de JFlex.
 %cup // Usaremos cup para la parte sintactica.
-%class AnalizadorLexico // Nombre de la clase.
+%class Analizador // Nombre de la clase.
 %public // Modificador de acceso.
 %line // Cointeo de lineas.
 %column // Conteo de columnas.
