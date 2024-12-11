@@ -55,7 +55,7 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = -a; :} %prec UMENOS
             | EXPRESION:a MULT EXPRESION:b {: RESULT = a * b; :}
             | EXPRESION:a DIV EXPRESION:b {: RESULT = a / b; :}
 
-            | PARENT_IZQ EXPRESION PARENT_DER {: RESULT = e; :}
+            | PARENT_IZQ EXPRESION:e PARENT_DER {: RESULT = e; :}
             | ENTERO:e {: RESULT = new Double(e); :}
             | DECIMAL:e {: RESULT = new Double(e); :}
 ;
