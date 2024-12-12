@@ -9,13 +9,14 @@ import java.io.StringReader;
 public class Main {
     public static void main(String[] args) {
         try {
-            String input = "imprimir(1-2*3+10);";
+            String input = "imprimir(1+2+3);imprimir(-1+2*2+9/4);";
             Analizador analizador = new Analizador(new BufferedReader(new StringReader(input)));
             parser p = new parser(analizador);
-            var resultado = p.parse();
+            var resultado = p.parse().value;
             System.out.println(resultado);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
+            //e.printStackTrace();
         }
     }
 }

@@ -20,7 +20,7 @@ public class Analizador implements java_cup.runtime.Scanner {
 
   // Lexical states.
   public static final int YYINITIAL = 0;
-  public static final int CADEMA = 2;
+  public static final int CADENA = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -703,8 +703,8 @@ public class Analizador implements java_cup.runtime.Scanner {
           case 15: break;
           case 2:
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"char: "+yychar+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [64] { yybegin(CADEMA); cadena = \"\"; }");
-            { yybegin(CADEMA); cadena = "";
+            System.out.println("action [64] { yybegin(CADENA); cadena = \"\"; }");
+            { yybegin(CADENA); cadena = "";
             }
           // fall through
           case 16: break;

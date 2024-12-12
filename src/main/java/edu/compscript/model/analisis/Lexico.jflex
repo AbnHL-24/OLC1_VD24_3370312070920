@@ -27,7 +27,7 @@ import java_cup.runtime.Symbol;
 %ignorecase // Ignorar mayusculas y minusculas.
 
 // Creación de estados.
-%state CADEMA
+%state CADENA
 
 //  Palabras reservadas.
 IMPRIMIR = "imprimir"
@@ -61,9 +61,9 @@ BLANCOS = [\ \r\t\f\n]+
 <YYINITIAL> {BLANCOS} {}
 
 // Moverme a estado cadena.
-<YYINITIAL> [\"] { yybegin(CADEMA); cadena = ""; }
+<YYINITIAL> [\"] { yybegin(CADENA); cadena = ""; }
 
-<CADEMA> {
+<CADENA> {
     [\"]    {String temporal = cadena; cadena = "";
             yybegin(YYINITIAL);
             return new Symbol(sym.CADENA, yyline, yycolumn, temporal); }
