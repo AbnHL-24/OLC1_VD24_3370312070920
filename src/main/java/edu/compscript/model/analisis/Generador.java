@@ -1,5 +1,7 @@
 package edu.compscript.model.analisis;
 
+import java.io.File;
+
 /**
  * Clase encargada de generar ecompilador del proyecto.
  */
@@ -15,6 +17,10 @@ public class Generador {
         try {
             // Es la ruta donde están todos los archivos de los analizadores.
             String ruta = "src/main/java/edu/compscript/model/analisis/";
+            // Eliminar archivos previamente generados
+            eliminarArchivo(ruta + "Analizador.java");
+            eliminarArchivo(ruta + "parser.java");
+            eliminarArchivo(ruta + "sym.java");
 
             generarLexico(ruta);
             generarSintactico(ruta);
@@ -53,6 +59,22 @@ public class Generador {
             java_cup.Main.main(cup);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Método encargado de eliminar un archivo si existe.
+     *
+     * @param rutaArchivo Ruta completa del archivo a eliminar.
+     */
+    private static void eliminarArchivo(String rutaArchivo) {
+        File archivo = new File(rutaArchivo);
+        if (archivo.exists()) {
+            if (archivo.delete()) {
+                System.out.println("Archivo eliminado: " + rutaArchivo);
+            } else {
+                System.err.println("No se pudo eliminar el archivo: " + rutaArchivo);
+            }
         }
     }
 }

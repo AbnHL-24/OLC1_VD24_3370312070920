@@ -1,22 +1,19 @@
 package edu.compscript;
 
-import edu.compscript.model.analisis.Analizador;
-import edu.compscript.model.analisis.parser;
+import edu.compscript.controller.editor.EditorController;
+import edu.compscript.model.analisis.Generador;
+import edu.compscript.view.editor.editorView;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            String input = "imprimir(1+2+3);imprimir(-1+2*2+9/4);";
-            Analizador analizador = new Analizador(new BufferedReader(new StringReader(input)));
-            parser p = new parser(analizador);
-            var resultado = p.parse().value;
-            System.out.println(resultado);
-        } catch (Exception e) {
-            System.out.println(e);
-            //e.printStackTrace();
-        }
+        /*Generador generador = new Generador();
+        generador.generadorCompilador();*/
+        SwingUtilities.invokeLater(() -> {
+            editorView view = new editorView();
+            EditorController controller = new EditorController(view);
+            view.mostrarInterfaz(); // Muestra la interfaz gráfica
+        });
     }
 }

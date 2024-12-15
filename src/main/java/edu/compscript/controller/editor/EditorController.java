@@ -1,9 +1,16 @@
 package edu.compscript.controller.editor;
 
+import edu.compscript.model.analisis.Analizador;
+import edu.compscript.model.analisis.parser;
+import edu.compscript.model.interprete.abstracto.Instruccion;
+import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
+import edu.compscript.model.interprete.simbolo.Arbol;
+import edu.compscript.model.interprete.simbolo.TablaSimbolos;
 import edu.compscript.view.editor.editorView;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.LinkedList;
 
 /**
  * Controlador de la vista del editor de código.
@@ -80,7 +87,7 @@ public class EditorController {
     private void ejecutarCodigo() {
         // Lógica para ejecutar el código
         String codigo = view.getEntradaJTextArea().getText();
-        String resultado = ejecutarInterprete(codigo); // Llama a tu lógica de interpretación
+        String resultado = ejecutarInterprete(codigo); // Llama a la lógica de interpretación
         view.getConsolaJTextArea().setText(resultado);
     }
 
@@ -90,7 +97,28 @@ public class EditorController {
      * @return
      */
     private String ejecutarInterprete(String codigo) {
-        // Aquí puedes invocar tu analizador léxico, sintáctico, o semántico
-        return "Resultado de la ejecución del código:\n" + codigo;
+        try {
+            Analizador analizador = new Analizador(new BufferedReader(new StringReader(codigo)));
+            parser p = new parser(analizador);
+            var resultado = p.parse();
+
+            var ast = new Arbol((LinkedList<Instruccion>) resultado.value );
+            var tabla = new TablaSimbolos();
+
+            for (var a : ast.getInstrucciones()) {
+                var res = a.interpretar(ast, tabla);
+                if (res instanceof ErroresExpresiones) {
+                    System.out.println(res.toString());
+                }
+                //System.out.println(res);
+            }
+            //System.out.println(ast.getConsola());
+
+            System.out.println(ast);
+            return ast.getConsola();
+        } catch (Exception e) {
+            System.out.println(e);
+            return e.getMessage();
+        }
     }
 }

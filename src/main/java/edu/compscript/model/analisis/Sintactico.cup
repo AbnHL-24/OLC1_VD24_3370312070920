@@ -1,61 +1,82 @@
 package edu.compscript.model.analisis;
 
-// Importaciones.
+// Importaciones principales.
 import java_cup.runtime.Symbol;
+import java.util.LinkedList;
+import edu.compscript.model.interprete.abstracto.Instruccion;
+import edu.compscript.model.interprete.simbolo.*;
+
+// Expresiones.
+import edu.compscript.model.interprete.expresiones.*; // Aquí se encuentra la clase Nativo.
+import edu.compscript.model.interprete.expresiones.operadores.aritmeticos.*;
+//import edu.compscript.model.interprete.expresiones.operadores.logicos.*;
+//import edu.compscript.model.interprete.expresiones.operadores.relacionales.*;
+
+// Instrucciones.
+import edu.compscript.model.interprete.instrucciones.*;
 
 parser code
 {:
     Analizador s;
-        parser(Analizador s) {this.s = s;}
+    parser(Analizador s) {this.s = s;}
 
-        public void syntax_error(Symbol s) {
-            System.out.println("Error sintáctico recuperable en la linea " + s.left + ", columna " + s.right);
-        }
+    public void syntax_error(Symbol s) {
+        //System.out.println("Error sintáctico recuperable en la linea " + s.left + ", columna " + s.right);
+    }
 
-        public void unrecovered_syntax_error(Symbol s) {
-            System.out.println("Error sintáctico no recuperable en la linea " + s.left + ", columna " + s.right);
-        }
+    public void unrecovered_syntax_error(Symbol s) {
+        //System.out.println("Error sintáctico no recuperable en la linea " + s.left + ", columna " + s.right);
+    }
 :}
 
 action code
 {:
-    String consola = "";
 :}
 
 terminal String CADENA, ENTERO, DECIMAL;
 terminal FIN_CADENA, IMPRIMIR;
-terminal MAS, MENOS, MULT, DIV, PARENT_IZQ, PARENT_DER, UMENOS;
+terminal MAS, MENOS, MULT, DIV, POW, ROOT, MOD;
+terminal PARENT_IZQ, PARENT_DER, UMENOS;
 
-nonterminal INICIO;
-nonterminal INSTRUCCIONES, INSTRUCCION;
-nonterminal Double EXPRESION;
+nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
+nonterminal Instruccion INSTRUCCION, IMPRESION;
+nonterminal Instruccion EXPRESION;
 
 //  Precedencias.
 precedence left MAS, MENOS;
-precedence left MULT, DIV;
+precedence left MULT, DIV, MOD;
+precedence nonassoc POW, ROOT;
 precedence right UMENOS;
 
 start with INICIO;
 
 // Escribir la gramatica.
-INICIO ::= INSTRUCCIONES {: RESULT = consola; :}
+INICIO ::= INSTRUCCIONES:a {: RESULT = a; :}
 ;
 
-INSRUCCIONES ::= INSTRUCCIONES INSTRUCCION
-                | INSTRUCCION
+INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b {: RESULT = a; RESULT.add(b); :}
+                | INSTRUCCION:a {: RESULT = new LinkedList<Instruccion>(); RESULT.add(a); :}
 ;
 
-INSTRUCCION ::= IMPRIMIR PARENT_IZQ EXPRESION:e PARENT_DER FIN_CADENA {: consola += e + "\n"; :}
-              | IMPRIMIR PARENT_IZQ CADENA:c PARENT_DER FIN_CADENA {: consola += c + "\n"; :}
+INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
 ;
 
-EXPRESION ::= MENOS EXPRESION:a {: RESULT = -a; :} %prec UMENOS
-            | EXPRESION:a MAS EXPRESION:b {: RESULT = a + b; :}
-            | EXPRESION:a MENOS EXPRESION:b {: RESULT = a - b; :}
-            | EXPRESION:a MULT EXPRESION:b {: RESULT = a * b; :}
-            | EXPRESION:a DIV EXPRESION:b {: RESULT = a / b; :}
+// ImprimirInstruccion(Instruccion expresion, int linea, int columna)
+IMPRESION ::= IMPRIMIR PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = new ImprimirInstruccion(a, aleft, aright); :}
+;
 
-            | PARENT_IZQ EXPRESION:e PARENT_DER {: RESULT = e; :}
-            | ENTERO:e {: RESULT = new Double(e); :}
-            | DECIMAL:e {: RESULT = new Double(e); :}
+EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft, aright); :} %prec UMENOS
+// OperacionAritmeticaExpresion(Instruccion operadorIzq, Instruccion operadorDer, Tipo tipo, int linea, int columna)
+            | EXPRESION:a MAS EXPRESION:b {: RESULT = new SumaExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MENOS EXPRESION:b {: RESULT = new RestaExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MULT EXPRESION:b {: RESULT = new MultiplicacionExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a DIV EXPRESION:b {: RESULT = new DivisionExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a POW EXPRESION:b {: RESULT = new PotenciaExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a ROOT EXPRESION:b {: RESULT = new RaizExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MOD EXPRESION:b {: RESULT = new ModuloExpresion(a, b, aleft, aright); :}
+// Nativo(Object valor, Tipo tipo, int linea, int columna)
+            | CADENA:a {: RESULT = new NativoExpresion(a, new Tipo(TipoDato.CADENA), aleft, aright); :}
+            | ENTERO:a {: RESULT = new NativoExpresion(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright); :}
+            | DECIMAL:a {: RESULT = new NativoExpresion(new Double(a), new Tipo(TipoDato.DECIMAL), aleft, aright); :}
+            | PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = a; :}
 ;
