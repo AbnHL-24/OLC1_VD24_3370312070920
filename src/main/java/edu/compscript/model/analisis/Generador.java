@@ -6,10 +6,6 @@ import java.io.File;
  * Clase encargada de generar ecompilador del proyecto.
  */
 public class Generador {
-    public static void main(String[] args) {
-        generadorCompilador();
-    }
-
     /**
      * Este método encargado de generar el compilador.
      */

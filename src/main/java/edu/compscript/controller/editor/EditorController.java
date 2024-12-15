@@ -20,18 +20,20 @@ public class EditorController {
 
     public EditorController(editorView view) {
         this.view = view;
-        initController();
-    }
 
-    /**
-     * Inicializa el controlador de la vista del editor de código.
-     */
-    private void initController() {
         // Conectar los eventos a los métodos correspondientes
         view.getNuevoArchivoButton().addActionListener(e -> limpiarEditor());
         view.getAbrirArchivoButton().addActionListener(e -> abrirArchivo());
         view.getGuardarArchivoButton().addActionListener(e -> guardarArchivo());
         view.getEjecutarButton().addActionListener(e -> ejecutarCodigo());
+//        initController();
+    }
+
+    /**
+     * Inicializa el controlador de la vista del editor de código.
+     */
+    public void initController() {
+        view.mostrarInterfaz();
     }
 
     /**

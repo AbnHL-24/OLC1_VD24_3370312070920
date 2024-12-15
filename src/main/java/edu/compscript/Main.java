@@ -8,12 +8,13 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        /*Generador generador = new Generador();
-        generador.generadorCompilador();*/
+        Generador generador = new Generador();
+        generador.generadorCompilador();
         SwingUtilities.invokeLater(() -> {
             editorView view = new editorView();
             EditorController controller = new EditorController(view);
-            view.mostrarInterfaz(); // Muestra la interfaz gráfica
+            controller.initController(); // Inicializa el controlador
+            //view.mostrarInterfaz(); // Muestra la interfaz gráfica
         });
     }
 }
