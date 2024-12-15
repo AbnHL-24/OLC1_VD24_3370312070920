@@ -1,49 +1,34 @@
 package edu.compscript.model.interprete.expresiones.operadores.aritmeticos;
 
 import edu.compscript.model.interprete.abstracto.Instruccion;
+import edu.compscript.model.interprete.expresiones.operadores.OperacionBinaria;
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
-import edu.compscript.model.interprete.expresiones.operadores.utilidades.OperacionResultante;
 import edu.compscript.model.interprete.expresiones.operadores.utilidades.tablas.aritmeticos.OperacionesDivision;
-import edu.compscript.model.interprete.simbolo.Arbol;
-import edu.compscript.model.interprete.simbolo.TablaSimbolos;
-import edu.compscript.model.interprete.simbolo.Tipo;
 import edu.compscript.model.interprete.simbolo.TipoDato;
 
-public class DivisionExpresion extends Instruccion {
-    private Instruccion operadorIzq;
-    private Instruccion operadorDer;
+public class DivisionExpresion extends OperacionBinaria {
 
     public DivisionExpresion(Instruccion operadorIzq,
                              Instruccion operadorDer,
                              int linea,
                              int columna) {
-        super(new Tipo(TipoDato.VOID), linea, columna);
-        this.operadorIzq = operadorIzq;
-        this.operadorDer = operadorDer;
+        super(operadorIzq, operadorDer, linea, columna);
     }
 
     @Override
-    public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
-        // Verificamos que no haya errores en los operadores.
-        var valorIzq = operadorIzq.interpretar(arbol, tabla);
-        var valorDer = operadorDer.interpretar(arbol, tabla);
+    protected TipoDato[][] getTablaOperacion() {
+        return OperacionesDivision.tablaDeDivisiones;
+    }
 
-        // Verificar errores.
-        if (valorIzq instanceof ErroresExpresiones || valorDer instanceof ErroresExpresiones) {
-            return valorIzq instanceof ErroresExpresiones ? valorIzq : valorDer;
+    @Override
+    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+        if (((Number) valorDer).doubleValue() == 0) {
+            return new ErroresExpresiones("SEMÁNTICO", "División por cero", linea, columna);
         }
-
-        var tipoResultado = OperacionResultante.calcular(OperacionesDivision.tablaDeDivisiones,
-                operadorIzq.tipo.getTipoDato().ordinal(),
-                operadorDer.tipo.getTipoDato().ordinal());
-
-        // Establece el tipo resultante en él atributo Tipo de la superclase Instrucción.
-        this.tipo.setTipoDato(tipoResultado);
-
-        // Realizar la operación según el resultado de la combinación.
         return switch (tipoResultado) {
+            case ENTERO -> ((Number) valorIzq).intValue() / ((Number) valorDer).intValue();
             case DECIMAL -> ((Number) valorIzq).doubleValue() / ((Number) valorDer).doubleValue();
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación multiplicación entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO", "Operación división entre tipos no soportada", linea, columna);
         };
     }
 }

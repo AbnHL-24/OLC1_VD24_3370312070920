@@ -9,7 +9,7 @@ public class OperacionesRaiz {
     /**
      * Tabla que define las combinaciones válidas para la operación raíz.
      */
-    public static final TipoDato[][] tablaDeRaiz = {
+    public static final TipoDato[][] tablaDeRadicaciones = {
             //ENTERO, DECIMAL
             {TipoDato.DECIMAL,   TipoDato.DECIMAL}, //ENTERO
             {TipoDato.DECIMAL,   TipoDato.DECIMAL}, //DECIMAL

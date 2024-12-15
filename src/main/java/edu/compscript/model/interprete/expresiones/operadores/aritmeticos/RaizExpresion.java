@@ -1,49 +1,34 @@
+// RaizExpresion.java
 package edu.compscript.model.interprete.expresiones.operadores.aritmeticos;
 
 import edu.compscript.model.interprete.abstracto.Instruccion;
+import edu.compscript.model.interprete.expresiones.operadores.OperacionBinaria;
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
-import edu.compscript.model.interprete.expresiones.operadores.utilidades.OperacionResultante;
-import edu.compscript.model.interprete.expresiones.operadores.utilidades.tablas.aritmeticos.OperacionesPotencia;
 import edu.compscript.model.interprete.expresiones.operadores.utilidades.tablas.aritmeticos.OperacionesRaiz;
-import edu.compscript.model.interprete.simbolo.Arbol;
-import edu.compscript.model.interprete.simbolo.TablaSimbolos;
-import edu.compscript.model.interprete.simbolo.Tipo;
 import edu.compscript.model.interprete.simbolo.TipoDato;
 
-public class RaizExpresion extends Instruccion {
-    private Instruccion operadorIzq;
-    private Instruccion operadorDer;
+public class RaizExpresion extends OperacionBinaria {
 
     public RaizExpresion(Instruccion operadorIzq,
-                             Instruccion operadorDer,
-                             int linea,
-                             int columna) {
-        super(new Tipo(TipoDato.VOID), linea, columna);
-        this.operadorIzq = operadorIzq;
-        this.operadorDer = operadorDer;
+                         Instruccion operadorDer,
+                         int linea,
+                         int columna) {
+        super(operadorIzq, operadorDer, linea, columna);
     }
 
     @Override
-    public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
-        // Verificamos que no haya errores en los operadores.
-        var valorIzq = operadorIzq.interpretar(arbol, tabla);
-        var valorDer = operadorDer.interpretar(arbol, tabla);
+    protected TipoDato[][] getTablaOperacion() {
+        return OperacionesRaiz.tablaDeRadicaciones;
+    }
 
-        // Verificar errores.
-        if (valorIzq instanceof ErroresExpresiones || valorDer instanceof ErroresExpresiones) {
-            return valorIzq instanceof ErroresExpresiones ? valorIzq : valorDer;
+    @Override
+    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+        if (((Number) valorIzq).doubleValue() < 0) {
+            return new ErroresExpresiones("SEMÁNTICO", "Raíz de un número negativo", linea, columna);
         }
-
-        var tipoResultado = OperacionResultante.calcular(OperacionesRaiz.tablaDeRaiz,
-                operadorIzq.tipo.getTipoDato().ordinal(),
-                operadorDer.tipo.getTipoDato().ordinal());
-
-        // Establece el tipo resultante en el atributo Tipo de la superclase Instrucción.
-        this.tipo.setTipoDato(tipoResultado);
-
-        // Realizar la operación según el resultado de la combinación.
         return switch (tipoResultado) {
-            case DECIMAL -> Math.pow(((Number) valorIzq).doubleValue(), 1 / ((Number) valorDer).doubleValue());
+            case ENTERO -> Math.pow(((Number) valorIzq).intValue(), 1.0 / ((Number) valorDer).intValue());
+            case DECIMAL -> Math.pow(((Number) valorIzq).doubleValue(), 1.0 / ((Number) valorDer).doubleValue());
             default -> new ErroresExpresiones("SEMÁNTICO", "Operación raíz entre tipos no soportada", linea, columna);
         };
     }

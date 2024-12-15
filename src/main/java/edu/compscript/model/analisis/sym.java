@@ -8,23 +8,32 @@ package edu.compscript.model.analisis;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int CADENA = 2;
-  public static final int DECIMAL = 4;
-  public static final int POW = 11;
-  public static final int MENOS = 8;
-  public static final int UMENOS = 16;
-  public static final int MOD = 13;
-  public static final int MULT = 9;
-  public static final int ENTERO = 3;
-  public static final int EOF = 0;
-  public static final int MAS = 7;
-  public static final int PARENT_IZQ = 14;
   public static final int ROOT = 12;
-  public static final int DIV = 10;
-  public static final int error = 1;
+  public static final int MOD = 13;
+  public static final int AND = 18;
+  public static final int MENOS = 8;
+  public static final int MENOR = 22;
+  public static final int CADENA = 2;
+  public static final int IGUAL = 20;
+  public static final int OR = 17;
+  public static final int PARENT_IZQ = 14;
+  public static final int DECIMAL = 4;
+  public static final int MENOR_IGUAL = 23;
   public static final int PARENT_DER = 15;
+  public static final int NOT = 19;
+  public static final int POW = 11;
   public static final int IMPRIMIR = 6;
+  public static final int MAYOR_IGUAL = 25;
+  public static final int UMENOS = 16;
+  public static final int MAYOR = 24;
+  public static final int EOF = 0;
+  public static final int MULT = 9;
+  public static final int DIFERENTE = 21;
+  public static final int DIV = 10;
   public static final int FIN_CADENA = 5;
+  public static final int error = 1;
+  public static final int ENTERO = 3;
+  public static final int MAS = 7;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -42,7 +51,16 @@ public class sym {
   "MOD",
   "PARENT_IZQ",
   "PARENT_DER",
-  "UMENOS"
+  "UMENOS",
+  "OR",
+  "AND",
+  "NOT",
+  "IGUAL",
+  "DIFERENTE",
+  "MENOR",
+  "MENOR_IGUAL",
+  "MAYOR",
+  "MAYOR_IGUAL"
   };
 }
 

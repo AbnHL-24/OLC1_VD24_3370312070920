@@ -3,10 +3,9 @@ package edu.compscript.view.editor;
 import lombok.Getter;
 
 import javax.swing.*;
-import java.awt.*;
 
 @Getter
-public class editorView {
+public class EditorView {
     private JPanel editorPane;
     private JSplitPane separator1;
     private JPanel menusJPanel;
@@ -23,7 +22,7 @@ public class editorView {
     private JTextArea consolaJTextArea;
 
     public void mostrarInterfaz() {
-        JFrame frame = new JFrame("ComptScript");
+        JFrame frame = new JFrame("CompScript");
         frame.setContentPane(this.editorPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

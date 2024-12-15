@@ -2,7 +2,7 @@ package edu.compscript;
 
 import edu.compscript.controller.editor.EditorController;
 import edu.compscript.model.analisis.Generador;
-import edu.compscript.view.editor.editorView;
+import edu.compscript.view.editor.EditorView;
 
 import javax.swing.*;
 
@@ -11,7 +11,7 @@ public class Main {
         Generador generador = new Generador();
         generador.generadorCompilador();
         SwingUtilities.invokeLater(() -> {
-            editorView view = new editorView();
+            EditorView view = new EditorView();
             EditorController controller = new EditorController(view);
             controller.initController(); // Inicializa el controlador
             //view.mostrarInterfaz(); // Muestra la interfaz gráfica

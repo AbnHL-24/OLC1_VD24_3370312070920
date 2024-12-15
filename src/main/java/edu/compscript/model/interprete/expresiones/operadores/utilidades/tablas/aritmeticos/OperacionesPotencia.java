@@ -9,7 +9,7 @@ public class OperacionesPotencia {
     /**
      * Tabla que define las combinaciones válidas para la operación potencia.
      */
-    public static final TipoDato[][] tablaDePotencia = {
+    public static final TipoDato[][] tablaDePotencias = {
             //ENTERO, DECIMAL
             {TipoDato.ENTERO,   TipoDato.DECIMAL}, //ENTERO
             {TipoDato.DECIMAL,   TipoDato.DECIMAL}, //DECIMAL

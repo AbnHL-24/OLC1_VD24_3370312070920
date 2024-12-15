@@ -1,12 +1,14 @@
 package edu.compscript.controller.editor;
 
+import edu.compscript.controller.reportes.ReporteDeErroresController;
 import edu.compscript.model.analisis.Analizador;
 import edu.compscript.model.analisis.parser;
 import edu.compscript.model.interprete.abstracto.Instruccion;
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
 import edu.compscript.model.interprete.simbolo.Arbol;
 import edu.compscript.model.interprete.simbolo.TablaSimbolos;
-import edu.compscript.view.editor.editorView;
+import edu.compscript.view.editor.EditorView;
+import edu.compscript.view.reportes.ReporteDeErroresView;
 
 import javax.swing.*;
 import java.io.*;
@@ -16,9 +18,10 @@ import java.util.LinkedList;
  * Controlador de la vista del editor de código.
  */
 public class EditorController {
-    private final editorView view;
+    private final EditorView view;
+    private LinkedList<ErroresExpresiones> listaErrores;
 
-    public EditorController(editorView view) {
+    public EditorController(EditorView view) {
         this.view = view;
 
         // Conectar los eventos a los métodos correspondientes
@@ -26,6 +29,7 @@ public class EditorController {
         view.getAbrirArchivoButton().addActionListener(e -> abrirArchivo());
         view.getGuardarArchivoButton().addActionListener(e -> guardarArchivo());
         view.getEjecutarButton().addActionListener(e -> ejecutarCodigo());
+        view.getReporteErroresButton().addActionListener(e -> mostrarReporteErrores());
 //        initController();
     }
 
@@ -34,6 +38,30 @@ public class EditorController {
      */
     public void initController() {
         view.mostrarInterfaz();
+    }
+
+    private void mostrarReporteErrores() {
+        try {
+            // Mostrar vista de ReporteDeErrores
+            ReporteDeErroresView reporteDeErroresView = new ReporteDeErroresView();
+            ReporteDeErroresController reporteDeErroresController = new ReporteDeErroresController(reporteDeErroresView);
+            //reporteDeErroresController.inicializar();
+
+            // Crear un JFrame para mostrar la vista de ReporteDeErrores
+            JFrame frame = new JFrame("Reporte de Errores");
+            frame.setContentPane(reporteDeErroresView.getPanel1());
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.pack();
+            frame.setLocationRelativeTo(null); // Centra la ventana en la pantalla
+            frame.setVisible(true);
+
+            // Iniciar la vista
+            reporteDeErroresController.inicializar(this.listaErrores);
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -89,8 +117,8 @@ public class EditorController {
     private void ejecutarCodigo() {
         // Lógica para ejecutar el código
         String codigo = view.getEntradaJTextArea().getText();
-        String resultado = ejecutarInterprete(codigo); // Llama a la lógica de interpretación
-        view.getConsolaJTextArea().setText(resultado);
+        // Llama a la lógica de interpretación y agrega el texto a la consola.
+        view.getConsolaJTextArea().setText(ejecutarInterprete(codigo));
     }
 
     /**
@@ -99,24 +127,37 @@ public class EditorController {
      * @return
      */
     private String ejecutarInterprete(String codigo) {
+        this.listaErrores = new LinkedList<>();
         try {
             Analizador analizador = new Analizador(new BufferedReader(new StringReader(codigo)));
             parser p = new parser(analizador);
             var resultado = p.parse();
 
+            // Crear la lista con todos los tipos de errores.
+            this.listaErrores.addAll(analizador.erroresLexicos);
+            this.listaErrores.addAll(p.erroresSintacticos);
+
+            // Recuperación de errores léxicos.
+            for (var error : analizador.erroresLexicos) {
+                System.out.println(error.toString());
+            }
+
             var ast = new Arbol((LinkedList<Instruccion>) resultado.value );
             var tabla = new TablaSimbolos();
 
             for (var a : ast.getInstrucciones()) {
+                if (a == null) continue; // Si es null no se ejecuta.
+
+                // Llama al método interpretar de la instrucción.
                 var res = a.interpretar(ast, tabla);
                 if (res instanceof ErroresExpresiones) {
-                    System.out.println(res.toString());
+                    this.listaErrores.add((ErroresExpresiones) res);
                 }
                 //System.out.println(res);
             }
             //System.out.println(ast.getConsola());
 
-            System.out.println(ast);
+            //System.out.println(ast);
             return ast.getConsola();
         } catch (Exception e) {
             System.out.println(e);

@@ -5,27 +5,37 @@ import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import edu.compscript.model.interprete.abstracto.Instruccion;
 import edu.compscript.model.interprete.simbolo.*;
-
 // Expresiones.
 import edu.compscript.model.interprete.expresiones.*; // Aquí se encuentra la clase Nativo.
 import edu.compscript.model.interprete.expresiones.operadores.aritmeticos.*;
-//import edu.compscript.model.interprete.expresiones.operadores.logicos.*;
-//import edu.compscript.model.interprete.expresiones.operadores.relacionales.*;
-
+import edu.compscript.model.interprete.expresiones.operadores.logicos.*;
+import edu.compscript.model.interprete.expresiones.operadores.relacionales.*;
 // Instrucciones.
 import edu.compscript.model.interprete.instrucciones.*;
+// Errores.
+import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
 
 parser code
 {:
     Analizador s;
     parser(Analizador s) {this.s = s;}
 
+    public LinkedList<ErroresExpresiones> erroresSintacticos = new LinkedList<>();
+
+    // Errores recuperables.
     public void syntax_error(Symbol s) {
-        //System.out.println("Error sintáctico recuperable en la linea " + s.left + ", columna " + s.right);
+        erroresSintacticos.add(new ErroresExpresiones("SINTÁCTICO RECUPERABLE",
+                    "No se esperaba el componente " + s.value,
+                    s.left,
+                    s.right));
     }
 
+    // Errores no recuperables.
     public void unrecovered_syntax_error(Symbol s) {
-        //System.out.println("Error sintáctico no recuperable en la linea " + s.left + ", columna " + s.right);
+        erroresSintacticos.add(new ErroresExpresiones("SINTÁCTICO NO RECUPERABLE",
+                    "No se esperaba el componente "+s.value,
+                    s.left,
+                    s.right));
     }
 :}
 
@@ -37,12 +47,18 @@ terminal String CADENA, ENTERO, DECIMAL;
 terminal FIN_CADENA, IMPRIMIR;
 terminal MAS, MENOS, MULT, DIV, POW, ROOT, MOD;
 terminal PARENT_IZQ, PARENT_DER, UMENOS;
+terminal OR, AND, NOT;
+terminal IGUAL, DIFERENTE, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
 
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Instruccion INSTRUCCION, IMPRESION;
 nonterminal Instruccion EXPRESION;
 
 //  Precedencias.
+precedence left OR;
+precedence left AND;
+precedence right NOT;
+precedence left IGUAL, DIFERENTE, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
 precedence left MAS, MENOS;
 precedence left MULT, DIV, MOD;
 precedence nonassoc POW, ROOT;
@@ -54,11 +70,13 @@ start with INICIO;
 INICIO ::= INSTRUCCIONES:a {: RESULT = a; :}
 ;
 
+// TODO verificar con un if si lo que viene es un null (error), null no se puede agregar a una lista.
 INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b {: RESULT = a; RESULT.add(b); :}
                 | INSTRUCCION:a {: RESULT = new LinkedList<Instruccion>(); RESULT.add(a); :}
 ;
 
 INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
+| error FIN_CADENA {: RESULT = null; :}
 ;
 
 // ImprimirInstruccion(Instruccion expresion, int linea, int columna)
@@ -66,7 +84,7 @@ IMPRESION ::= IMPRIMIR PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = new Imprimi
 ;
 
 EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft, aright); :} %prec UMENOS
-// OperacionAritmeticaExpresion(Instruccion operadorIzq, Instruccion operadorDer, Tipo tipo, int linea, int columna)
+// OperacionAritmeticaExpresion(Instruccion operadorIzq, Instruccion operadorDer, int linea, int columna)
             | EXPRESION:a MAS EXPRESION:b {: RESULT = new SumaExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MENOS EXPRESION:b {: RESULT = new RestaExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MULT EXPRESION:b {: RESULT = new MultiplicacionExpresion(a, b, aleft, aright); :}
@@ -74,6 +92,18 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft
             | EXPRESION:a POW EXPRESION:b {: RESULT = new PotenciaExpresion(a, b, aleft, aright); :}
             | EXPRESION:a ROOT EXPRESION:b {: RESULT = new RaizExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MOD EXPRESION:b {: RESULT = new ModuloExpresion(a, b, aleft, aright); :}
+            // Operaciones lógicas
+            | EXPRESION:a OR EXPRESION:b {: RESULT = new OrExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a AND EXPRESION:b {: RESULT = new AndExpresion(a, b, aleft, aright); :}
+            | NOT EXPRESION:a {: RESULT = new NotExpresion(a, aleft, aright); :}
+            // Operaciones relacionales
+            | EXPRESION:a IGUAL EXPRESION:b {: RESULT = new IgualacionExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a DIFERENTE EXPRESION:b {: RESULT = new DiferenciacionExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MENOR EXPRESION:b {: RESULT = new MenorQueExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MENOR_IGUAL EXPRESION:b {: RESULT = new MenorIgualQueExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MAYOR EXPRESION:b {: RESULT = new MayorQueExpresion(a, b, aleft, aright); :}
+            | EXPRESION:a MAYOR_IGUAL EXPRESION:b {: RESULT = new MayorIgualQueExpresion(a, b, aleft, aright); :}
+
 // Nativo(Object valor, Tipo tipo, int linea, int columna)
             | CADENA:a {: RESULT = new NativoExpresion(a, new Tipo(TipoDato.CADENA), aleft, aright); :}
             | ENTERO:a {: RESULT = new NativoExpresion(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright); :}
