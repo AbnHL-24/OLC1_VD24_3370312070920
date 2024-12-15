@@ -8,8 +8,8 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        Generador generador = new Generador();
-        generador.generadorCompilador();
+        /*Generador generador = new Generador();
+        generador.generadorCompilador();*/
         SwingUtilities.invokeLater(() -> {
             EditorView view = new EditorView();
             EditorController controller = new EditorController(view);
