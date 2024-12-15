@@ -10,7 +10,8 @@ Este proyecto contiene el intérprete para un lenguaje de programación llamado 
 Pendiente
 
 ## Instalación
-CompScrip requiere tener instalado el JRE de OpenJDK 21 o superior. 
+Deberia poder ejecutar el proyecto sin necesidad de instalar nada, unicamente ejecutando el archivo OLC1_VD24_3370312070920.jar localizado en la carpeta out/artifacts/OLC1_VD24_3370312070920_jar/. 
+Si llegase a fallar, instale el JRE de Java 21 o superior.
 
 ## Uso
 El uso del proyecto disponible en este repositorio es para fines educativos, de aprendizaje y proyectos de código abierto. Si alguna persona, entidad o institución desea hacer uso de este proyecto para fines comerciales, favor de contactar al autor del proyecto solicitando un permiso o licencia de uso.
