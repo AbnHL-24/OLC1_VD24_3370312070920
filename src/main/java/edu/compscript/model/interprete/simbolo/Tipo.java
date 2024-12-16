@@ -12,4 +12,5 @@ import lombok.Setter;
 @Setter
 public class Tipo {
     private TipoDato tipoDato;
+
 }

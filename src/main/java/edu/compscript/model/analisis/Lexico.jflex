@@ -27,12 +27,7 @@ erroresLexicos = new LinkedList<>();
 %full // reconocimiento de caracteres completos.
 %debug // Modo de depuracion.
 %ignorecase // Ignorar mayusculas y minusculas.
-
-// Creación de estados.
-//%state CADENA
-
-//  Palabras reservadas.
-IMPRIMIR = "imprimir"
+%buffer 16384
 
 // Símbolos del sistema.
 
@@ -40,6 +35,21 @@ CADENA = [\"]((\\\")|[^\"\n]*)[\"] // Cadena de texto.
 DECIMAL = [0-9]+"."[0-9]+
 ENTERO = [0-9]+
 FIN_CADENA = ";"
+CONSOLE = "console"
+PUNTO = "."
+DOS_PUNTOS = ":"
+LOG = "log"
+
+// Tipos de datos, variables y constantes.
+STRING = "string"
+INT = "int"
+DOUBLE = "double"
+BOOLEANO = "boolean"
+CARACTER = "char"
+LET = "let"
+CONST = "const"
+/*LLAVE_IZQ = "{"
+LLAVE_DER = "}"*/
 
 // Operadores aritméticos
 MAS = "+"
@@ -57,7 +67,7 @@ AND = "&&"
 NOT = "!"
 
 // Operadores relacionales
-IGUAL = "=="
+IGUALDAD = "=="
 DIFERENTE = "!="
 MENOR = "<"
 MENOR_IGUAL = "<="
@@ -67,16 +77,12 @@ MAYOR_IGUAL = ">="
 PARENT_IZQ = "("
 PARENT_DER = ")"
 BLANCOS = [\ \r\t\f\n]+
+ID = [a-zA-Z][a-zA-Z0-9_]*
 
 %%
 // Importa el orden, generalmente primero van las palabras reservadas y todos aquellos que puede crear conflico.
 // Las palabras reservadas <NOMBRE_TOKEN, LEXEMA>.
-<YYINITIAL> {IMPRIMIR} { return new Symbol(sym.IMPRIMIR, yyline, yycolumn, yytext());  }
-<YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
-<YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
-<YYINITIAL> {CADENA} {String cadena = yytext();
-                            cadena = cadena.substring(1, cadena.length()-1);
-                            return new Symbol(sym.CADENA, yyline, yycolumn, cadena);  }
+
 // Simbolos
 <YYINITIAL> {FIN_CADENA} { return new Symbol(sym.FIN_CADENA, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext());  }
@@ -88,17 +94,45 @@ BLANCOS = [\ \r\t\f\n]+
 <YYINITIAL> {MOD} { return new Symbol(sym.MOD, yyline, yycolumn, yytext());  }
 <YYINITIAL> {PARENT_IZQ} { return new Symbol(sym.PARENT_IZQ, yyline, yycolumn, yytext());  }
 <YYINITIAL> {PARENT_DER} { return new Symbol(sym.PARENT_DER, yyline, yycolumn, yytext());  }
-<YYINITIAL> {BLANCOS} {}
 // Logicos y relacionales
 <YYINITIAL> {OR} { return new Symbol(sym.OR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {AND} { return new Symbol(sym.AND, yyline, yycolumn, yytext()); }
 <YYINITIAL> {NOT} { return new Symbol(sym.NOT, yyline, yycolumn, yytext()); }
-<YYINITIAL> {IGUAL} { return new Symbol(sym.IGUAL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {IGUALDAD} { return new Symbol(sym.IGUALDAD, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DIFERENTE} { return new Symbol(sym.DIFERENTE, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOR} { return new Symbol(sym.MENOR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MENOR_IGUAL} { return new Symbol(sym.MENOR_IGUAL, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MAYOR} { return new Symbol(sym.MAYOR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MAYOR_IGUAL} { return new Symbol(sym.MAYOR_IGUAL, yyline, yycolumn, yytext()); }
+// Imprimir en consola.
+<YYINITIAL> {CONSOLE} { return new Symbol(sym.CONSOLE, yyline, yycolumn, yytext()); }
+<YYINITIAL> {PUNTO} { return new Symbol(sym.PUNTO, yyline, yycolumn, yytext()); }
+<YYINITIAL> {LOG} { return new Symbol(sym.LOG, yyline, yycolumn, yytext()); }
+// Tipos de datos, variables y constantes.
+<YYINITIAL> {STRING} { return new Symbol(sym.STRING, yyline, yycolumn, yytext()); }
+<YYINITIAL> {INT} { return new Symbol(sym.INT, yyline, yycolumn, yytext()); }
+<YYINITIAL> {DOUBLE} { return new Symbol(sym.DOUBLE, yyline, yycolumn, yytext()); }
+<YYINITIAL> {BOOLEANO} { return new Symbol(sym.BOOLEANO, yyline, yycolumn, yytext()); }
+<YYINITIAL> {CARACTER} { return new Symbol(sym.CARACTER, yyline, yycolumn, yytext()); }
+<YYINITIAL> {LET} { return new Symbol(sym.LET, yyline, yycolumn, yytext()); }
+<YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
+<YYINITIAL> {DOS_PUNTOS} { return new Symbol(sym.DOS_PUNTOS, yyline, yycolumn, yytext()); }
+<YYINITIAL> {ASIGNACION} { return new Symbol(sym.ASIGNACION, yyline, yycolumn, yytext()); }
+/*<YYINITIAL> {LLAVE_IZQ} { return new Symbol(sym.LLAVE_IZQ, yyline, yycolumn, yytext()); }
+<YYINITIAL> {LLAVE_DER} { return new Symbol(sym.LLAVE_DER, yyline, yycolumn, yytext()); }*/
+// De ultimo lo que no es palabra reservada.
+<YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
+<YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
+<YYINITIAL> {ID} { return new Symbol(sym.ID, yyline, yycolumn, yytext());  }
+<YYINITIAL> {BLANCOS} {}
+<YYINITIAL> {CADENA} {String cadena = yytext();
+                            cadena = cadena.substring(1, cadena.length()-1);
+                            return new Symbol(sym.CADENA, yyline, yycolumn, cadena);  }
+// Comentarios.
+<YYINITIAL> "/*"([^*]|\*[^/])*"*"+"/" { /* Ignorar comentarios multilínea */ }
+<YYINITIAL> "//".*                    { /* Ignorar comentarios de una línea */ }
+
+
 // Errores lexicos.
 <YYINITIAL> . {erroresLexicos.add(new ErroresExpresiones("LEXICO",
                 "El caracter " +yytext()+" no pertenece al lenguaje",
