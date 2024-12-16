@@ -23,4 +23,8 @@ public class Arbol {
     public void Print(String valor) {
         this.consola += valor + "\n";
     }
+
+    public void agregarErrores(ErroresExpresiones error) {
+        this.errores.add(error);
+    }
 }

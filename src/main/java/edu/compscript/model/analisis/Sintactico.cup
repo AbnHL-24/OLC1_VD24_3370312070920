@@ -53,13 +53,12 @@ terminal OR, AND, NOT;
 terminal IGUALDAD, DIFERENTE, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
 terminal CONSOLE, PUNTO, LOG;
 terminal STRING, INT, DOUBLE, BOOLEANO, CARACTER;
-terminal LET, CONST, DOS_PUNTOS, ASIGNACION;
-
-//terminal LLAVE_IZQ, LLAVE_DER;
+terminal LET, CONST, DOS_PUNTOS, ASIGNACION, FOR;
+terminal TRUE, FALSE, IF, ELSE, LLAVE_IZQ, LLAVE_DER;
 
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Boolean MUTABILIDAD;
-nonterminal Instruccion INSTRUCCION, IMPRESION, DECLARACION, ASIGNACIONVAR;
+nonterminal Instruccion INSTRUCCION, IMPRESION, DECLARACION, ASIGNACIONVAR, SIF, CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion AUTOINCREMENTO, AUTODECREMENTO;
 nonterminal Instruccion EXPRESION;
 nonterminal Tipo TIPOS;
@@ -91,6 +90,8 @@ INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
                 | AUTODECREMENTO:a FIN_CADENA {: RESULT = a; :}
                 | DECLARACION:a FIN_CADENA {: RESULT = a; :}
                 | ASIGNACIONVAR:a FIN_CADENA {: RESULT = a; :}
+                | SIF:a {: RESULT = a; :}
+                | CFOR:a {: RESULT = a; :}
                 | error FIN_CADENA {: RESULT = null; :}
 ;
 
@@ -108,6 +109,10 @@ DECLARACION ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPOS:c {: RESULT = new Declaracio
 
 // AsignacionVariableInstruccion(String id, Instruccion valor, int linea, int columna)
 ASIGNACIONVAR ::= ID:a ASIGNACION EXPRESION:b {: RESULT = new AsignacionVariableInstruccion(a, b, aleft, aright); :}
+;
+
+// IfInstruccion(Instruccion condicion, LinkedList<Instruccion> instrucciones,int linea, int columna)
+SIF ::= IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new IfInstruccion(a, b, aleft, aright); :}
 ;
 
 // ImprimirInstruccion(Instruccion expresion, int linea, int columna)
@@ -136,12 +141,23 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft
             | EXPRESION:a MAYOR_IGUAL EXPRESION:b {: RESULT = new MayorIgualQueExpresion(a, b, aleft, aright); :}
 
 // Nativo(Object valor, Tipo tipo, int linea, int columna)
+            | ID:a {: RESULT = new AccesoVariableExpresion(a, aleft, aright); :}
             | CADENA:a {: RESULT = new NativoExpresion(a, new Tipo(TipoDato.CADENA), aleft, aright); :}
             | ENTERO:a {: RESULT = new NativoExpresion(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright); :}
             | DECIMAL:a {: RESULT = new NativoExpresion(new Double(a), new Tipo(TipoDato.DECIMAL), aleft, aright); :}
+            | TRUE:a {: RESULT = new NativoExpresion(true, new Tipo(TipoDato.BOOLEANO), aleft, aright); :}
+            | FALSE:a {: RESULT = new NativoExpresion(false, new Tipo(TipoDato.BOOLEANO), aleft, aright); :}
             //AccesoVariableExpresion(String id, int linea, int columna)
-            | ID:a {: RESULT = new AccesoVariableExpresion(a, aleft, aright); :}
             | PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = a; :}
+;
+
+// ForInstruccion(Instruccion asignacion, Instruccion condicion, Instruccion actualizacion, LinkedList<Instruccion> instrucciones, int linea, int columna)
+CFOR ::= FOR PARENT_IZQ ASIGNACIONVAR:a FIN_CADENA EXPRESION:b FIN_CADENA ACTUALIZA_FOR:c PARENT_DER LLAVE_IZQ INSTRUCCIONES:d LLAVE_DER {: RESULT = new ForInstruccion(a, b, c, d, aleft, aright); :}
+;
+
+ACTUALIZA_FOR ::= ASIGNACIONVAR:a {: RESULT = a; :}
+                | AUTOINCREMENTO:a {: RESULT = a; :}
+                | AUTODECREMENTO:a {: RESULT = a; :}
 ;
 
 TIPOS ::= STRING {: RESULT = new Tipo(TipoDato.CADENA); :}

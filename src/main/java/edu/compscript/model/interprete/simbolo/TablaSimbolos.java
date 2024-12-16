@@ -10,14 +10,21 @@ import java.util.HashMap;
 public class TablaSimbolos {
     private HashMap<String, Simbolo> tablaActual;
     private String nombre;
+    private TablaSimbolos tablaPadre;
 
     public TablaSimbolos() {
         this.tablaActual = new HashMap<>();
         this.nombre = "";
     }
 
+    public TablaSimbolos(TablaSimbolos tablaPadre) {
+        this.tablaPadre = tablaPadre;
+        this.tablaActual = new HashMap<>();
+        this.nombre = "";
+    }
+
     public boolean setVariable(Simbolo simbolo) {
-        Simbolo busqueda = (Simbolo) this.tablaActual.get(simbolo.getId().toLowerCase());
+        Simbolo busqueda = this.tablaActual.get(simbolo.getId().toLowerCase());
         if (busqueda == null) {
             this.tablaActual.put(simbolo.getId().toLowerCase(), simbolo);
             return true;
@@ -26,9 +33,11 @@ public class TablaSimbolos {
     }
 
     public Simbolo getVariable(String id) {
-        Simbolo busqueda = (Simbolo) this.tablaActual.get(id.toLowerCase());
-        if (busqueda != null) {
-            return busqueda;
+        for (TablaSimbolos tabla = this; tabla != null; tabla = tabla.getTablaPadre()) {
+            Simbolo busqueda = (Simbolo) tabla.getTablaActual().get(id.toLowerCase());
+            if (busqueda != null) {
+                return busqueda;
+            }
         }
         return null;
     }

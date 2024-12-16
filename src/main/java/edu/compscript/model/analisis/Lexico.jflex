@@ -44,12 +44,17 @@ LOG = "log"
 STRING = "string"
 INT = "int"
 DOUBLE = "double"
-BOOLEANO = "boolean"
+BOOLEANO = "bool"
 CARACTER = "char"
 LET = "let"
 CONST = "const"
-/*LLAVE_IZQ = "{"
-LLAVE_DER = "}"*/
+LLAVE_IZQ = "{"
+LLAVE_DER = "}"
+IF = "if"
+ELSE = "else"
+TRUE = "true"
+FALSE = "false"
+FOR = "for"
 INCREMENTO = "++"
 DECREMENTO = "--"
 
@@ -123,8 +128,13 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOS_PUNTOS} { return new Symbol(sym.DOS_PUNTOS, yyline, yycolumn, yytext()); }
 <YYINITIAL> {ASIGNACION} { return new Symbol(sym.ASIGNACION, yyline, yycolumn, yytext()); }
-/*<YYINITIAL> {LLAVE_IZQ} { return new Symbol(sym.LLAVE_IZQ, yyline, yycolumn, yytext()); }
-<YYINITIAL> {LLAVE_DER} { return new Symbol(sym.LLAVE_DER, yyline, yycolumn, yytext()); }*/
+<YYINITIAL> {LLAVE_IZQ} { return new Symbol(sym.LLAVE_IZQ, yyline, yycolumn, yytext()); }
+<YYINITIAL> {LLAVE_DER} { return new Symbol(sym.LLAVE_DER, yyline, yycolumn, yytext()); }
+<YYINITIAL> {TRUE} { return new Symbol(sym.TRUE, yyline, yycolumn, yytext()); }
+<YYINITIAL> {FALSE} { return new Symbol(sym.FALSE, yyline, yycolumn, yytext()); }
+<YYINITIAL> {IF} { return new Symbol(sym.IF, yyline, yycolumn, yytext()); }
+<YYINITIAL> {ELSE} { return new Symbol(sym.ELSE, yyline, yycolumn, yytext()); }
+<YYINITIAL> {FOR} { return new Symbol(sym.FOR, yyline, yycolumn, yytext()); }
 // De ultimo lo que no es palabra reservada.
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
 <YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
