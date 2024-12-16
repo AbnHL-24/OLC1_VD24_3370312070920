@@ -50,6 +50,8 @@ LET = "let"
 CONST = "const"
 /*LLAVE_IZQ = "{"
 LLAVE_DER = "}"*/
+INCREMENTO = "++"
+DECREMENTO = "--"
 
 // Operadores aritméticos
 MAS = "+"
@@ -60,6 +62,7 @@ POW = "^"
 ROOT = "$"
 MOD = "%"
 ASIGNACION = "="
+
 
 // Operadores lógicos
 OR = "||"
@@ -85,6 +88,8 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 
 // Simbolos
 <YYINITIAL> {FIN_CADENA} { return new Symbol(sym.FIN_CADENA, yyline, yycolumn, yytext());  }
+<YYINITIAL> {INCREMENTO} { return new Symbol(sym.INCREMENTO, yyline, yycolumn, yytext()); }
+<YYINITIAL> {DECREMENTO} { return new Symbol(sym.DECREMENTO, yyline, yycolumn, yytext()); }
 <YYINITIAL> {MAS} { return new Symbol(sym.MAS, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MENOS} { return new Symbol(sym.MENOS, yyline, yycolumn, yytext());  }
 <YYINITIAL> {MULT} { return new Symbol(sym.MULT, yyline, yycolumn, yytext());  }

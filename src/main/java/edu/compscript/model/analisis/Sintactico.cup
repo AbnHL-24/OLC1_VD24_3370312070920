@@ -46,6 +46,7 @@ action code
 
 terminal String CADENA, ENTERO, DECIMAL, ID;
 terminal FIN_CADENA;
+terminal INCREMENTO, DECREMENTO;
 terminal MAS, MENOS, MULT, DIV, POW, ROOT, MOD;
 terminal PARENT_IZQ, PARENT_DER, UMENOS;
 terminal OR, AND, NOT;
@@ -53,11 +54,13 @@ terminal IGUALDAD, DIFERENTE, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
 terminal CONSOLE, PUNTO, LOG;
 terminal STRING, INT, DOUBLE, BOOLEANO, CARACTER;
 terminal LET, CONST, DOS_PUNTOS, ASIGNACION;
+
 //terminal LLAVE_IZQ, LLAVE_DER;
 
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Boolean MUTABILIDAD;
 nonterminal Instruccion INSTRUCCION, IMPRESION, DECLARACION, ASIGNACIONVAR;
+nonterminal Instruccion AUTOINCREMENTO, AUTODECREMENTO;
 nonterminal Instruccion EXPRESION;
 nonterminal Tipo TIPOS;
 
@@ -69,6 +72,7 @@ precedence left IGUALDAD, DIFERENTE, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
 precedence left MAS, MENOS;
 precedence left MULT, DIV, MOD;
 precedence nonassoc POW, ROOT;
+precedence left INCREMENTO, DECREMENTO;
 precedence right UMENOS;
 
 start with INICIO;
@@ -83,9 +87,16 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b {: RESULT = a; RESULT.add(b); :}
 ;
 
 INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
+                | AUTOINCREMENTO:a FIN_CADENA {: RESULT = a; :}
+                | AUTODECREMENTO:a FIN_CADENA {: RESULT = a; :}
                 | DECLARACION:a FIN_CADENA {: RESULT = a; :}
                 | ASIGNACIONVAR:a FIN_CADENA {: RESULT = a; :}
                 | error FIN_CADENA {: RESULT = null; :}
+;
+
+AUTOINCREMENTO ::= ID:a INCREMENTO {: RESULT = new IncrementoExpresion(a, aleft, aright); :}
+;
+AUTODECREMENTO ::= ID:a DECREMENTO {: RESULT = new DecrementoExpresion(a, aleft, aright); :}
 ;
 
 // <MUTABILIDAD> <ID> : <TIPO> ;
@@ -123,6 +134,7 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft
             | EXPRESION:a MENOR_IGUAL EXPRESION:b {: RESULT = new MenorIgualQueExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MAYOR EXPRESION:b {: RESULT = new MayorQueExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MAYOR_IGUAL EXPRESION:b {: RESULT = new MayorIgualQueExpresion(a, b, aleft, aright); :}
+
 // Nativo(Object valor, Tipo tipo, int linea, int columna)
             | CADENA:a {: RESULT = new NativoExpresion(a, new Tipo(TipoDato.CADENA), aleft, aright); :}
             | ENTERO:a {: RESULT = new NativoExpresion(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright); :}

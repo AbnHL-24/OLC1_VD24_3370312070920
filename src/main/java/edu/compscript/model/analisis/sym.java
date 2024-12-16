@@ -8,44 +8,46 @@ package edu.compscript.model.analisis;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int POW = 11;
-  public static final int MULT = 9;
-  public static final int CONST = 35;
+  public static final int POW = 13;
+  public static final int MULT = 11;
+  public static final int CONST = 37;
   public static final int ENTERO = 3;
-  public static final int DIFERENTE = 21;
-  public static final int DOUBLE = 31;
-  public static final int DOS_PUNTOS = 36;
-  public static final int INT = 30;
-  public static final int NOT = 19;
-  public static final int AND = 18;
-  public static final int CARACTER = 33;
-  public static final int IGUALDAD = 20;
-  public static final int OR = 17;
-  public static final int DIV = 10;
-  public static final int UMENOS = 16;
+  public static final int DIFERENTE = 23;
+  public static final int DOUBLE = 33;
+  public static final int DOS_PUNTOS = 38;
+  public static final int INT = 32;
+  public static final int NOT = 21;
+  public static final int AND = 20;
+  public static final int CARACTER = 35;
+  public static final int IGUALDAD = 22;
+  public static final int OR = 19;
+  public static final int DIV = 12;
+  public static final int INCREMENTO = 7;
+  public static final int UMENOS = 18;
   public static final int ID = 5;
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
-  public static final int PARENT_IZQ = 14;
+  public static final int PARENT_IZQ = 16;
+  public static final int DECREMENTO = 8;
   public static final int error = 1;
   public static final int FIN_CADENA = 6;
   public static final int CADENA = 2;
-  public static final int MENOS = 8;
-  public static final int MENOR = 22;
-  public static final int MOD = 13;
-  public static final int ASIGNACION = 37;
-  public static final int MAYOR = 24;
-  public static final int LOG = 28;
-  public static final int PUNTO = 27;
-  public static final int MAYOR_IGUAL = 25;
-  public static final int LET = 34;
-  public static final int BOOLEANO = 32;
-  public static final int ROOT = 12;
-  public static final int STRING = 29;
-  public static final int MENOR_IGUAL = 23;
-  public static final int PARENT_DER = 15;
-  public static final int CONSOLE = 26;
-  public static final int MAS = 7;
+  public static final int MENOS = 10;
+  public static final int MENOR = 24;
+  public static final int MOD = 15;
+  public static final int ASIGNACION = 39;
+  public static final int MAYOR = 26;
+  public static final int LOG = 30;
+  public static final int PUNTO = 29;
+  public static final int MAYOR_IGUAL = 27;
+  public static final int LET = 36;
+  public static final int BOOLEANO = 34;
+  public static final int ROOT = 14;
+  public static final int STRING = 31;
+  public static final int MENOR_IGUAL = 25;
+  public static final int PARENT_DER = 17;
+  public static final int CONSOLE = 28;
+  public static final int MAS = 9;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -54,6 +56,8 @@ public class sym {
   "DECIMAL",
   "ID",
   "FIN_CADENA",
+  "INCREMENTO",
+  "DECREMENTO",
   "MAS",
   "MENOS",
   "MULT",
