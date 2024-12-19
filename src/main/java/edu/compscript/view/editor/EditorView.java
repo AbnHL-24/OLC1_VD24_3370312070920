@@ -35,6 +35,7 @@ public class EditorView {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        // TODO Poner numero de linea al editor.
     }
 
 }
