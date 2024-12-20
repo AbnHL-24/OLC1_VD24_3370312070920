@@ -5,6 +5,7 @@
 
 package edu.compscript.model.analisis;
 
+import edu.compscript.model.interprete.instrucciones.control.IfInstruccion;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
 import edu.compscript.model.interprete.abstracto.Instruccion;
@@ -615,7 +616,7 @@ class CUP$parser$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		LinkedList<Instruccion> b = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new IfInstruccion(a, b, aleft, aright); 
+		 RESULT = new IfInstruccion(a, b, aleft, aright);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("SIF",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
