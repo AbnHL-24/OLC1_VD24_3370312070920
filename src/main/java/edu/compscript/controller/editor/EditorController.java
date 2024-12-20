@@ -88,6 +88,7 @@ public class EditorController {
                     content.append(line).append("\n");
                 }
                 view.getEntradaJTextArea().setText(content.toString());
+                view.getConsolaJTextArea().setText("");
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Error al abrir el archivo: " + ex.getMessage());
             }

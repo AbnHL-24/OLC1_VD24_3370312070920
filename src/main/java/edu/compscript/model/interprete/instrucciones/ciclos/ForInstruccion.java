@@ -1,4 +1,4 @@
-package edu.compscript.model.interprete.instrucciones;
+package edu.compscript.model.interprete.instrucciones.ciclos;
 
 import edu.compscript.model.interprete.abstracto.Instruccion;
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
