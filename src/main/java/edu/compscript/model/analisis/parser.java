@@ -5,6 +5,7 @@
 
 package edu.compscript.model.analisis;
 
+import edu.compscript.model.interprete.instrucciones.ciclos.ForInstruccion;
 import edu.compscript.model.interprete.instrucciones.control.IfInstruccion;
 import java_cup.runtime.Symbol;
 import java.util.LinkedList;
@@ -982,7 +983,7 @@ class CUP$parser$actions {
 		int dleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int dright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		LinkedList<Instruccion> d = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = new ForInstruccion(a, b, c, d, aleft, aright); 
+		 RESULT = new ForInstruccion(a, b, c, d, aleft, aright);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CFOR",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-10)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
