@@ -32,6 +32,7 @@ erroresLexicos = new LinkedList<>();
 // Símbolos del sistema.
 
 CADENA = [\"]((\\\")|[^\"\n]*)[\"] // Cadena de texto.
+CARACTER = [']([^'\n])['] // Caracter.
 DECIMAL = [0-9]+"."[0-9]+
 ENTERO = [0-9]+
 FIN_CADENA = ";"
@@ -45,7 +46,7 @@ STRING = "string"
 INT = "int"
 DOUBLE = "double"
 BOOLEANO = "bool"
-CARACTER = "char"
+CHAR = "char"
 LET = "let"
 CONST = "const"
 LLAVE_IZQ = "{"
@@ -123,7 +124,6 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {INT} { return new Symbol(sym.INT, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOUBLE} { return new Symbol(sym.DOUBLE, yyline, yycolumn, yytext()); }
 <YYINITIAL> {BOOLEANO} { return new Symbol(sym.BOOLEANO, yyline, yycolumn, yytext()); }
-<YYINITIAL> {CARACTER} { return new Symbol(sym.CARACTER, yyline, yycolumn, yytext()); }
 <YYINITIAL> {LET} { return new Symbol(sym.LET, yyline, yycolumn, yytext()); }
 <YYINITIAL> {CONST} { return new Symbol(sym.CONST, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DOS_PUNTOS} { return new Symbol(sym.DOS_PUNTOS, yyline, yycolumn, yytext()); }
@@ -136,9 +136,11 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {ELSE} { return new Symbol(sym.ELSE, yyline, yycolumn, yytext()); }
 <YYINITIAL> {FOR} { return new Symbol(sym.FOR, yyline, yycolumn, yytext()); }
 // De ultimo lo que no es palabra reservada.
+<YYINITIAL> {CHAR} { return new Symbol(sym.CHAR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
 <YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
 <YYINITIAL> {ID} { return new Symbol(sym.ID, yyline, yycolumn, yytext());  }
+<YYINITIAL> {CARACTER} { return new Symbol(sym.CARACTER, yyline, yycolumn, yytext());  }
 <YYINITIAL> {BLANCOS} {}
 <YYINITIAL> {CADENA} {String cadena = yytext();
                             cadena = cadena.substring(1, cadena.length()-1);

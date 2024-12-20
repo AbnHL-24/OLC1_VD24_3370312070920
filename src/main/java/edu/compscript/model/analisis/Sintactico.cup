@@ -12,6 +12,8 @@ import edu.compscript.model.interprete.expresiones.operadores.logicos.*;
 import edu.compscript.model.interprete.expresiones.operadores.relacionales.*;
 // Instrucciones.
 import edu.compscript.model.interprete.instrucciones.*;
+import edu.compscript.model.interprete.instrucciones.control.*;
+import edu.compscript.model.interprete.instrucciones.ciclos.*;
 // Excepciones, errores.
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
 
@@ -44,7 +46,7 @@ action code
 {:
 :}
 
-terminal String CADENA, ENTERO, DECIMAL, ID;
+terminal String CADENA, ENTERO, DECIMAL, ID, CARACTER;
 terminal FIN_CADENA;
 terminal INCREMENTO, DECREMENTO;
 terminal MAS, MENOS, MULT, DIV, POW, ROOT, MOD;
@@ -52,7 +54,7 @@ terminal PARENT_IZQ, PARENT_DER, UMENOS;
 terminal OR, AND, NOT;
 terminal IGUALDAD, DIFERENTE, MENOR, MENOR_IGUAL, MAYOR, MAYOR_IGUAL;
 terminal CONSOLE, PUNTO, LOG;
-terminal STRING, INT, DOUBLE, BOOLEANO, CARACTER;
+terminal STRING, INT, DOUBLE, BOOLEANO, CHAR;
 terminal LET, CONST, DOS_PUNTOS, ASIGNACION, FOR;
 terminal TRUE, FALSE, IF, ELSE, LLAVE_IZQ, LLAVE_DER;
 
@@ -142,6 +144,7 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft
 
 // Nativo(Object valor, Tipo tipo, int linea, int columna)
             | ID:a {: RESULT = new AccesoVariableExpresion(a, aleft, aright); :}
+            | CARACTER:a {: char valor = a.charAt(1); RESULT = new NativoExpresion(valor, new Tipo(TipoDato.CARACTER), aleft, aright); :}
             | CADENA:a {: RESULT = new NativoExpresion(a, new Tipo(TipoDato.CADENA), aleft, aright); :}
             | ENTERO:a {: RESULT = new NativoExpresion(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright); :}
             | DECIMAL:a {: RESULT = new NativoExpresion(new Double(a), new Tipo(TipoDato.DECIMAL), aleft, aright); :}
@@ -159,12 +162,12 @@ ACTUALIZA_FOR ::= ASIGNACIONVAR:a {: RESULT = a; :}
                 | AUTOINCREMENTO:a {: RESULT = a; :}
                 | AUTODECREMENTO:a {: RESULT = a; :}
 ;
-
+// Tipos de datos.
 TIPOS ::= STRING {: RESULT = new Tipo(TipoDato.CADENA); :}
             | INT {: RESULT = new Tipo(TipoDato.ENTERO); :}
             | DOUBLE {: RESULT = new Tipo(TipoDato.DECIMAL); :}
             | BOOLEANO {: RESULT = new Tipo(TipoDato.BOOLEANO); :}
-            | CARACTER {: RESULT = new Tipo(TipoDato.CARACTER); :}
+            | CHAR {: RESULT = new Tipo(TipoDato.CARACTER); :}
 ;
 
 MUTABILIDAD ::= LET {: RESULT = true; :}
