@@ -106,7 +106,7 @@ AUTODECREMENTO ::= ID:a DECREMENTO {: RESULT = new DecrementoExpresion(a, aleft,
 // <MUTABILIDAD> <ID> : <TIPO> = <EXPRESION> ;ö
 // DeclaracionInstruccion(boolean mutabilidad, String id, Instruccion valor, Tipo tipo, int linea, int columna)ö
 DECLARACION ::= MUTABILIDAD:a ID:b DOS_PUNTOS TIPOS:c {: RESULT = new DeclaracionInstruccion(a, b, null,c, bleft, bright); :}
-                | MUTABILIDAD:a ID:b DOS_PUNTOS TIPOS:c ASIGNACION EXPRESION:d {: RESULT = new DeclaracionInstruccion(a, b, d, c, bleft, bright); :}
+              | MUTABILIDAD:a ID:b DOS_PUNTOS TIPOS:c ASIGNACION EXPRESION:d {: RESULT = new DeclaracionInstruccion(a, b, d, c, bleft, bright); :}
 ;
 
 // AsignacionVariableInstruccion(String id, Instruccion valor, int linea, int columna)
@@ -115,7 +115,8 @@ ASIGNACIONVAR ::= ID:a ASIGNACION EXPRESION:b {: RESULT = new AsignacionVariable
 
 // IfInstruccion(Instruccion condicion, LinkedList<Instruccion> instrucciones,int linea, int columna)
 SIF ::= IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER ELSE SIF:c {: RESULT = new IfElseInstruccion(a, b, c, aleft, aright); :}
-        | IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new IfInstruccion(a, b, aleft, aright); :}
+      | IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER ELSE LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: RESULT = new IfElseInstruccion(a, b, c, aleft, aright); :}
+      | IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new IfInstruccion(a, b, aleft, aright); :}
 ;
 
 // ImprimirInstruccion(Instruccion expresion, int linea, int columna)
