@@ -114,7 +114,7 @@ ASIGNACIONVAR ::= ID:a ASIGNACION EXPRESION:b {: RESULT = new AsignacionVariable
 ;
 
 // IfInstruccion(Instruccion condicion, LinkedList<Instruccion> instrucciones,int linea, int columna)
-SIF ::= IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER ELSE LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: RESULT = new IfElseInstruccion(a, b, c, aleft, aright); :}
+SIF ::= IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER ELSE SIF:c {: RESULT = new IfElseInstruccion(a, b, c, aleft, aright); :}
         | IF PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new IfInstruccion(a, b, aleft, aright); :}
 ;
 

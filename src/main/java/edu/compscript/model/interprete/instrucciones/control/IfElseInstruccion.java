@@ -12,13 +12,13 @@ import java.util.LinkedList;
 public class IfElseInstruccion extends Instruccion {
     private Instruccion condicion;
     private LinkedList<Instruccion> instruccionesIf;
-    private LinkedList<Instruccion> instruccionesElse;
+    private Instruccion elseIf;
 
-    public IfElseInstruccion(Instruccion condicion, LinkedList<Instruccion> instruccionesIf, LinkedList<Instruccion> instruccionesElse, int linea, int columna) {
+    public IfElseInstruccion(Instruccion condicion, LinkedList<Instruccion> instruccionesIf, Instruccion elseIf, int linea, int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.condicion = condicion;
         this.instruccionesIf = instruccionesIf;
-        this.instruccionesElse = instruccionesElse;
+        this.elseIf = elseIf;
     }
 
     @Override
@@ -41,11 +41,9 @@ public class IfElseInstruccion extends Instruccion {
                 var resultado = instruccion.interpretar(arbol, tablaLocal);
                 if (resultado instanceof ErroresExpresiones) arbol.agregarErrores((ErroresExpresiones) resultado);
             }
-        } else {
-            for (Instruccion instruccion : this.instruccionesElse) {
-                var resultado = instruccion.interpretar(arbol, tablaLocal);
-                if (resultado instanceof ErroresExpresiones) arbol.agregarErrores((ErroresExpresiones) resultado);
-            }
+        } else if (this.elseIf != null) {
+            var resultado = this.elseIf.interpretar(arbol, tablaLocal);
+            if (resultado instanceof ErroresExpresiones) arbol.agregarErrores((ErroresExpresiones) resultado);
         }
         return null;
     }
