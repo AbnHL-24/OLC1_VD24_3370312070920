@@ -66,6 +66,7 @@ nonterminal Instruccion EXPRESION;
 nonterminal Tipo TIPOS;
 
 //  Precedencias.
+precedence left ELSE;
 precedence left OR;
 precedence left AND;
 precedence right NOT;
