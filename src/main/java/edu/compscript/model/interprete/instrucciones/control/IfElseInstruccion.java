@@ -12,13 +12,13 @@ import java.util.LinkedList;
 public class IfElseInstruccion extends Instruccion {
     private Instruccion condicion;
     private LinkedList<Instruccion> instruccionesIf;
-    private Instruccion elseIf;
+    private LinkedList<Instruccion> instruccionesElse;
 
-    public IfElseInstruccion(Instruccion condicion, LinkedList<Instruccion> instruccionesIf, Instruccion elseIf, int linea, int columna) {
+    public IfElseInstruccion(Instruccion condicion, LinkedList<Instruccion> instruccionesIf, LinkedList<Instruccion> instruccionesElse, int linea, int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.condicion = condicion;
         this.instruccionesIf = instruccionesIf;
-        this.elseIf = elseIf;
+        this.instruccionesElse = instruccionesElse;
     }
 
     @Override
@@ -26,7 +26,6 @@ public class IfElseInstruccion extends Instruccion {
         var condicion = this.condicion.interpretar(arbol, tabla);
         if (condicion instanceof ErroresExpresiones) return condicion;
 
-        // La condicion siempre tiene que ser booleana.
         if (this.condicion.tipo.getTipoDato() != TipoDato.BOOLEANO) {
             return new ErroresExpresiones("SEMÁNTICO",
                     "La condición del if no es booleana",
@@ -41,9 +40,11 @@ public class IfElseInstruccion extends Instruccion {
                 var resultado = instruccion.interpretar(arbol, tablaLocal);
                 if (resultado instanceof ErroresExpresiones) arbol.agregarErrores((ErroresExpresiones) resultado);
             }
-        } else if (this.elseIf != null) {
-            var resultado = this.elseIf.interpretar(arbol, tablaLocal);
-            if (resultado instanceof ErroresExpresiones) arbol.agregarErrores((ErroresExpresiones) resultado);
+        } else {
+            for (Instruccion instruccion : this.instruccionesElse) {
+                var resultado = instruccion.interpretar(arbol, tablaLocal);
+                if (resultado instanceof ErroresExpresiones) arbol.agregarErrores((ErroresExpresiones) resultado);
+            }
         }
         return null;
     }

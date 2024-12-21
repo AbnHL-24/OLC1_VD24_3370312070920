@@ -8,11 +8,21 @@ import edu.compscript.model.interprete.simbolo.Tipo;
 import edu.compscript.model.interprete.simbolo.TipoDato;
 
 import java.util.LinkedList;
-
+/**
+ * Clase que representa una instrucción if.
+ */
 public class IfInstruccion extends Instruccion {
     private Instruccion condicion;
     private LinkedList<Instruccion> instrucciones;
 
+    /**
+     * Constructor de la instrucción if.
+     *
+     * @param condicion    Condición del if.
+     * @param instrucciones Instrucciones del if.
+     * @param linea        Línea en la que se encuentra la instrucción.
+     * @param columna      Columna en la que se encuentra la instrucción.
+     */
     public IfInstruccion(Instruccion condicion, LinkedList<Instruccion> instrucciones,int linea, int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.condicion = condicion;
