@@ -668,7 +668,7 @@ class CUP$parser$actions {
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		LinkedList<Instruccion> c = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 a.add(new CaseInstruccion(b, c, bleft, bright)); RESULT = a; 
+		 a.add(new CaseInstruccion((NativoExpresion) b, c, bleft, bright)); RESULT = a; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CASES_LISTA",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

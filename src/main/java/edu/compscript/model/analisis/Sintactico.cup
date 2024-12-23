@@ -108,28 +108,9 @@ MATCH ::= MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b LL
         | MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b DEFAULT_LEX CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: RESULT = new MatchInstruccion(a, b, new CaseInstruccion(null, c, aleft, aright), aleft, aright); :}
 ;
 
-CASES_LISTA ::= CASES_LISTA:a EXPRESIONES_NATIVAS:b CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: a.add(new CaseInstruccion(b, c, bleft, bright)); RESULT = a; :}
+CASES_LISTA ::= CASES_LISTA:a EXPRESIONES_NATIVAS:b CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: a.add(new CaseInstruccion((NativoExpresion) b, c, bleft, bright)); RESULT = a; :}
                | EXPRESIONES_NATIVAS:a CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new LinkedList<CaseInstruccion>(); RESULT.add(new CaseInstruccion((NativoExpresion) a, b, aleft, aright)); :}
 ;
-
-// Instruccion match.
-/*MATCH ::= MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b DEFAULT:c LLAVE_DER {: RESULT = new MatchInstruccion(a, b, c, aleft, aright); :}
-        | MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b LLAVE_DER {: RESULT = new MatchInstruccion(a, b, null, aleft, aright); :}
-        | MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ DEFAULT:c LLAVE_DER {: RESULT = new MatchInstruccion(a, new LinkedList<>(), c, aleft, aright); :}
-;
-
-CASES_LISTA ::= CASES_LISTA:a CASE:b {: a.add(b); RESULT = a; :}
-              | CASE:b {: RESULT = new LinkedList<CaseInstruccion>(); RESULT.add(b); :}
-;
-
-CASE ::= EXPRESION:a CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new CaseInstruccion(a, b, aleft, aright); :}
-;
-
-DEFAULT ::= DEFAULT_LEX CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES_DEFAULT:a LLAVE_DER {: RESULT = a; :}
-;
-
-INSTRUCCIONES_DEFAULT ::= INSTRUCCIONES:a {: RESULT = a; :}
-;*/
 
 AUTOINCREMENTO ::= ID:a INCREMENTO {: RESULT = new IncrementoExpresion(a, aleft, aright); :}
 ;
