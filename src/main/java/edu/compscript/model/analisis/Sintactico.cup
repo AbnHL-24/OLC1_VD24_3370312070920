@@ -12,8 +12,9 @@ import edu.compscript.model.interprete.expresiones.operadores.logicos.*;
 import edu.compscript.model.interprete.expresiones.operadores.relacionales.*;
 // Instrucciones.
 import edu.compscript.model.interprete.instrucciones.*;
-import edu.compscript.model.interprete.instrucciones.control.*;
 import edu.compscript.model.interprete.instrucciones.ciclos.*;
+import edu.compscript.model.interprete.instrucciones.control.*;
+import edu.compscript.model.interprete.instrucciones.control.utilidades.*;
 // Excepciones, errores.
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
 
@@ -57,13 +58,17 @@ terminal CONSOLE, PUNTO, LOG;
 terminal STRING, INT, DOUBLE, BOOLEANO, CHAR;
 terminal LET, CONST, DOS_PUNTOS, ASIGNACION, FOR;
 terminal TRUE, FALSE, IF, ELSE, LLAVE_IZQ, LLAVE_DER;
+terminal MATCH_LEX, DEFAULT_LEX, CASE_SIMBOL;
 
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Boolean MUTABILIDAD;
 nonterminal Instruccion INSTRUCCION, IMPRESION, DECLARACION, ASIGNACIONVAR, SIF, CFOR, ACTUALIZA_FOR;
 nonterminal Instruccion AUTOINCREMENTO, AUTODECREMENTO;
-nonterminal Instruccion EXPRESION;
+nonterminal Instruccion EXPRESION, EXPRESIONES_NATIVAS;
 nonterminal Tipo TIPOS;
+nonterminal Instruccion MATCH, CASE, DEFAULT;
+nonterminal LinkedList<CaseInstruccion> CASES_LISTA;
+nonterminal LinkedList<Instruccion> INSTRUCCIONES_DEFAULT;
 
 //  Precedencias.
 precedence left ELSE;
@@ -89,6 +94,7 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b {: RESULT = a; RESULT.add(b); :}
 ;
 
 INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
+              | MATCH:a {: RESULT = a; :}
               | AUTOINCREMENTO:a FIN_CADENA {: RESULT = a; :}
               | AUTODECREMENTO:a FIN_CADENA {: RESULT = a; :}
               | DECLARACION:a FIN_CADENA {: RESULT = a; :}
@@ -97,6 +103,33 @@ INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
               | CFOR:a {: RESULT = a; :}
               | error FIN_CADENA {: RESULT = null; :}
 ;
+
+MATCH ::= MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b LLAVE_DER {: RESULT = new MatchInstruccion(a, b, null, aleft, aright); :}
+        | MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b DEFAULT_LEX CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: RESULT = new MatchInstruccion(a, b, new CaseInstruccion(null, c, aleft, aright), aleft, aright); :}
+;
+
+CASES_LISTA ::= CASES_LISTA:a EXPRESIONES_NATIVAS:b CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:c LLAVE_DER {: a.add(new CaseInstruccion(b, c, bleft, bright)); RESULT = a; :}
+               | EXPRESIONES_NATIVAS:a CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new LinkedList<CaseInstruccion>(); RESULT.add(new CaseInstruccion((NativoExpresion) a, b, aleft, aright)); :}
+;
+
+// Instruccion match.
+/*MATCH ::= MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b DEFAULT:c LLAVE_DER {: RESULT = new MatchInstruccion(a, b, c, aleft, aright); :}
+        | MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ CASES_LISTA:b LLAVE_DER {: RESULT = new MatchInstruccion(a, b, null, aleft, aright); :}
+        | MATCH_LEX PARENT_IZQ EXPRESION:a PARENT_DER LLAVE_IZQ DEFAULT:c LLAVE_DER {: RESULT = new MatchInstruccion(a, new LinkedList<>(), c, aleft, aright); :}
+;
+
+CASES_LISTA ::= CASES_LISTA:a CASE:b {: a.add(b); RESULT = a; :}
+              | CASE:b {: RESULT = new LinkedList<CaseInstruccion>(); RESULT.add(b); :}
+;
+
+CASE ::= EXPRESION:a CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES:b LLAVE_DER {: RESULT = new CaseInstruccion(a, b, aleft, aright); :}
+;
+
+DEFAULT ::= DEFAULT_LEX CASE_SIMBOL LLAVE_IZQ INSTRUCCIONES_DEFAULT:a LLAVE_DER {: RESULT = a; :}
+;
+
+INSTRUCCIONES_DEFAULT ::= INSTRUCCIONES:a {: RESULT = a; :}
+;*/
 
 AUTOINCREMENTO ::= ID:a INCREMENTO {: RESULT = new IncrementoExpresion(a, aleft, aright); :}
 ;
@@ -144,17 +177,21 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft
             | EXPRESION:a MENOR_IGUAL EXPRESION:b {: RESULT = new MenorIgualQueExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MAYOR EXPRESION:b {: RESULT = new MayorQueExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MAYOR_IGUAL EXPRESION:b {: RESULT = new MayorIgualQueExpresion(a, b, aleft, aright); :}
+            //AccesoVariableExpresion(String id, int linea, int columna)
+            | PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = a; :}
+            | ID:a {: RESULT = new AccesoVariableExpresion(a, aleft, aright); :}
+            | EXPRESIONES_NATIVAS:a {: RESULT = a; :}
+
+;
 
 // Nativo(Object valor, Tipo tipo, int linea, int columna)
-            | ID:a {: RESULT = new AccesoVariableExpresion(a, aleft, aright); :}
-            | CARACTER:a {: char valor = a.charAt(1); RESULT = new NativoExpresion(valor, new Tipo(TipoDato.CARACTER), aleft, aright); :}
+EXPRESIONES_NATIVAS ::= CARACTER:a {: char valor = a.charAt(1); RESULT = new NativoExpresion(valor, new Tipo(TipoDato.CARACTER), aleft, aright); :}
             | CADENA:a {: RESULT = new NativoExpresion(a, new Tipo(TipoDato.CADENA), aleft, aright); :}
             | ENTERO:a {: RESULT = new NativoExpresion(Integer.parseInt(a), new Tipo(TipoDato.ENTERO), aleft, aright); :}
             | DECIMAL:a {: RESULT = new NativoExpresion(new Double(a), new Tipo(TipoDato.DECIMAL), aleft, aright); :}
             | TRUE:a {: RESULT = new NativoExpresion(true, new Tipo(TipoDato.BOOLEANO), aleft, aright); :}
             | FALSE:a {: RESULT = new NativoExpresion(false, new Tipo(TipoDato.BOOLEANO), aleft, aright); :}
-            //AccesoVariableExpresion(String id, int linea, int columna)
-            | PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = a; :}
+
 ;
 
 // ForInstruccion(Instruccion asignacion, Instruccion condicion, Instruccion actualizacion, LinkedList<Instruccion> instrucciones, int linea, int columna)

@@ -14,7 +14,11 @@ public class IfElseIfInstruccion extends Instruccion {
     private LinkedList<Instruccion> instruccionesIf;
     private Instruccion instruccionElseIf;
 
-    public IfElseIfInstruccion(Instruccion condicion, LinkedList<Instruccion> instruccionesIf, Instruccion instruccionElseIf, int linea, int columna) {
+    public IfElseIfInstruccion(Instruccion condicion,
+                               LinkedList<Instruccion> instruccionesIf,
+                               Instruccion instruccionElseIf,
+                               int linea,
+                               int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.condicion = condicion;
         this.instruccionesIf = instruccionesIf;

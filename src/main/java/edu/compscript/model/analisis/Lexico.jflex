@@ -56,6 +56,9 @@ ELSE = "else"
 TRUE = "true"
 FALSE = "false"
 FOR = "for"
+MATCH_LEX = "match"
+DEFAULT_LEX = "default"
+CASE_SIMBOL = "=>"
 INCREMENTO = "++"
 DECREMENTO = "--"
 
@@ -135,6 +138,9 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {IF} { return new Symbol(sym.IF, yyline, yycolumn, yytext()); }
 <YYINITIAL> {ELSE} { return new Symbol(sym.ELSE, yyline, yycolumn, yytext()); }
 <YYINITIAL> {FOR} { return new Symbol(sym.FOR, yyline, yycolumn, yytext()); }
+<YYINITIAL> {MATCH_LEX} { return new Symbol(sym.MATCH_LEX, yyline, yycolumn, yytext()); }
+<YYINITIAL> {DEFAULT_LEX} { return new Symbol(sym.DEFAULT_LEX, yyline, yycolumn, yytext()); }
+<YYINITIAL> {CASE_SIMBOL} { return new Symbol(sym.CASE_SIMBOL, yyline, yycolumn, yytext()); }
 // De ultimo lo que no es palabra reservada.
 <YYINITIAL> {CHAR} { return new Symbol(sym.CHAR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }

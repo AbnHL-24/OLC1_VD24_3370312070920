@@ -23,7 +23,10 @@ public class IfInstruccion extends Instruccion {
      * @param linea        Línea en la que se encuentra la instrucción.
      * @param columna      Columna en la que se encuentra la instrucción.
      */
-    public IfInstruccion(Instruccion condicion, LinkedList<Instruccion> instrucciones,int linea, int columna) {
+    public IfInstruccion(Instruccion condicion,
+                         LinkedList<Instruccion> instrucciones,
+                         int linea,
+                         int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.condicion = condicion;
         this.instrucciones = instrucciones;
