@@ -40,6 +40,7 @@ CONSOLE = "console"
 PUNTO = "."
 DOS_PUNTOS = ":"
 LOG = "log"
+COMA = ","
 
 // Tipos de datos, variables y constantes.
 STRING = "string"
@@ -61,6 +62,8 @@ DEFAULT_LEX = "default"
 CASE_SIMBOL = "=>"
 INCREMENTO = "++"
 DECREMENTO = "--"
+VOID = "void"
+RUN_MAIN = "RUN_MAIN"
 
 // Operadores aritméticos
 MAS = "+"
@@ -121,6 +124,7 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 // Imprimir en consola.
 <YYINITIAL> {CONSOLE} { return new Symbol(sym.CONSOLE, yyline, yycolumn, yytext()); }
 <YYINITIAL> {PUNTO} { return new Symbol(sym.PUNTO, yyline, yycolumn, yytext()); }
+<YYINITIAL> {COMA} { return new Symbol(sym.COMA, yyline, yycolumn, yytext()); }
 <YYINITIAL> {LOG} { return new Symbol(sym.LOG, yyline, yycolumn, yytext()); }
 // Tipos de datos, variables y constantes.
 <YYINITIAL> {STRING} { return new Symbol(sym.STRING, yyline, yycolumn, yytext()); }
@@ -141,6 +145,8 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {MATCH_LEX} { return new Symbol(sym.MATCH_LEX, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DEFAULT_LEX} { return new Symbol(sym.DEFAULT_LEX, yyline, yycolumn, yytext()); }
 <YYINITIAL> {CASE_SIMBOL} { return new Symbol(sym.CASE_SIMBOL, yyline, yycolumn, yytext()); }
+<YYINITIAL> {VOID} { return new Symbol(sym.VOID, yyline, yycolumn, yytext()); }
+<YYINITIAL> {RUN_MAIN} { return new Symbol(sym.RUN_MAIN, yyline, yycolumn, yytext()); }
 // De ultimo lo que no es palabra reservada.
 <YYINITIAL> {CHAR} { return new Symbol(sym.CHAR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }

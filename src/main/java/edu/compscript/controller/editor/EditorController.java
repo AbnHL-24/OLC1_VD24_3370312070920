@@ -5,6 +5,9 @@ import edu.compscript.model.analisis.Analizador;
 import edu.compscript.model.analisis.parser;
 import edu.compscript.model.interprete.abstracto.Instruccion;
 import edu.compscript.model.interprete.excepciones.ErroresExpresiones;
+import edu.compscript.model.interprete.instrucciones.DeclaracionInstruccion;
+import edu.compscript.model.interprete.instrucciones.MetodoInstruccion;
+import edu.compscript.model.interprete.instrucciones.RunMainInstruccion;
 import edu.compscript.model.interprete.simbolo.Arbol;
 import edu.compscript.model.interprete.simbolo.TablaSimbolos;
 import edu.compscript.view.editor.EditorView;
@@ -138,24 +141,56 @@ public class EditorController {
             this.listaErrores.addAll(analizador.erroresLexicos);
             this.listaErrores.addAll(p.erroresSintacticos);
 
+            var ast = new Arbol((LinkedList<Instruccion>) resultado.value );
+            var tabla = new TablaSimbolos();
+            ast.setTablaGlobal(tabla);
+
             // Recuperación de errores léxicos.
             for (var error : analizador.erroresLexicos) {
                 System.out.println(error.toString());
             }
 
-            var ast = new Arbol((LinkedList<Instruccion>) resultado.value );
-            var tabla = new TablaSimbolos();
-
+            //Primer recorrido del AST, almacenamiento de métodos, funciones y structs.
             for (var a : ast.getInstrucciones()) {
                 if (a == null) continue; // Si es null no se ejecuta.
 
+                if (a instanceof MetodoInstruccion) ast.agregarFunciones(a);
+
                 // Llama al método interpretar de la instrucción.
-                var res = a.interpretar(ast, tabla);
-                if (res instanceof ErroresExpresiones) {
-                    this.listaErrores.add((ErroresExpresiones) res);
-                }
+//                var res = a.interpretar(ast, tabla);
+//                  if (res instanceof ErroresExpresiones) {
+//                    this.listaErrores.add((ErroresExpresiones) res);
+//                }
                 //System.out.println(res);
             }
+
+            // Segundo recorrido del AST, declaraciones y asignaciones.
+            for (var a : ast.getInstrucciones()) {
+                //if (a == null) continue; // Si es null no se ejecuta.
+
+                // Llama al método interpretar de la instrucción.
+                if (a instanceof DeclaracionInstruccion) {
+                    var res = a.interpretar(ast, tabla);
+                    if (res instanceof ErroresExpresiones) {
+                        ast.agregarErrores((ErroresExpresiones) res);
+//                        this.listaErrores.add((ErroresExpresiones) res);
+                    }
+                }
+            }
+
+            // Tercer recorrigo del AST, ejecución de la funcion main.
+            for (var a : ast.getInstrucciones()) {
+                if (a instanceof RunMainInstruccion) {
+                    var res = a.interpretar(ast, tabla);
+                    if (res instanceof ErroresExpresiones) ast.agregarErrores((ErroresExpresiones) res);
+                    break;
+                }
+            }
+            listaErrores.addAll(ast.getErrores());
+
+            // Buscar una instancia de main y ejecutamos el interpretar().
+
+
             //System.out.println(ast.getConsola());
 
             //System.out.println(ast);
