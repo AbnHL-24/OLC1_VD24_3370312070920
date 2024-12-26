@@ -7,11 +7,11 @@ import edu.compscript.model.interprete.simbolo.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class RunMainInstruccion extends Instruccion {
+public class LlamadaInstruccion extends Instruccion {
     private String id;
     private LinkedList<HashMap> parametros;
 
-    public RunMainInstruccion(String id,
+    public LlamadaInstruccion(String id,
                               LinkedList<HashMap> parametros,
                               int linea,
                               int columna) {
@@ -34,18 +34,12 @@ public class RunMainInstruccion extends Instruccion {
         // Verificando que la función sea una instancia de MetodoInstruccion.
         if (!(busqueda instanceof MetodoInstruccion metodoInstruccion)) {
             return new ErroresExpresiones("SEMANTICO",
-                    "La función " + id + " no es un método.",
+                    "La llamada a la función " + id + " es errónea.",
                     this.linea,
                     this.columna);
         } else {
             var nuevaTabla = new TablaSimbolos(arbol.getTablaGlobal());
-            nuevaTabla.setNombre("Run_Main " + id);
-            /*
-            Similar a Kotlin, en el lenguaje de este intérprete cuando se declara una funcion esta debe de ser declarada
-            con valores predeterminados en cada uno de sus parámetros, por lo que a la hora de que dicha función es
-            llamada no es necesario verificar que los parámetros coincidan en cantidad, tipo y orden. Pero, si este no
-            fuese el caso, sería necesaria la implementación de un código que verifique dichas validaciónes.
-             */
+            nuevaTabla.setNombre("Llamada " + id);
 
             // Declarando parametros.
             for (int i = 0; i < metodoInstruccion.getParametros().size(); i++) {
@@ -127,4 +121,5 @@ public class RunMainInstruccion extends Instruccion {
         }
         return null;
     }
+    // TODO queda pendiendte el RETURN y descomentar LLAMADA en la seccion instruccion en el LEXICO.
 }

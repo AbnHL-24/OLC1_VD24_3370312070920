@@ -73,7 +73,7 @@ nonterminal LinkedList<CaseInstruccion> CASES_LISTA;
 nonterminal LinkedList<Instruccion> INSTRUCCIONES_DEFAULT;
 nonterminal Instruccion METODO;
 nonterminal LinkedList<HashMap> PARAMS, PARAMSCALL;
-nonterminal Instruccion RUN;
+nonterminal Instruccion RUN, LLAMADA;
 nonterminal HashMap<String, Object> PARAM;
 
 //  Precedencias.
@@ -102,6 +102,7 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b {: RESULT = a; RESULT.add(b); :}
 
 INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
               | RUN:a FIN_CADENA {: RESULT = a; :}
+              | LLAMADA:a FIN_CADENA {: RESULT = a; :}
               | METODO:a {: RESULT = a; :}
               | MATCH:a {: RESULT = a; :}
               | AUTOINCREMENTO:a FIN_CADENA {: RESULT = a; :}
@@ -150,6 +151,10 @@ RUN ::= RUN_MAIN ID:a PARENT_IZQ PARAMSCALL:b PARENT_DER {: RESULT = new RunMain
       | RUN_MAIN ID:a PARENT_IZQ PARENT_DER {: RESULT = new RunMainInstruccion(a, new LinkedList<HashMap>(), aleft, aright);  :}
 ;
 
+LLAMADA ::= ID:a PARENT_IZQ PARAMSCALL:b PARENT_DER {: RESULT = new LlamadaInstruccion(a, b, aleft, aright); :}
+          | ID:a PARENT_IZQ PARENT_DER {: RESULT = new LlamadaInstruccion(a, new LinkedList<HashMap>(), aleft, aright); :}
+;
+
 PARAMSCALL ::= PARAMSCALL:a COMA ID:b ASIGNACION EXPRESION:c {: var hm2 = new HashMap<String, Object>();
                                                                 hm2.put("id", b);
                                                                 hm2.put("expresion", c);
@@ -190,6 +195,8 @@ IMPRESION ::= CONSOLE PUNTO LOG PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = ne
 
 EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft, aright); :} %prec UMENOS
 // OperacionAritmeticaExpresion(Instruccion operadorIzq, Instruccion operadorDer, int linea, int columna)
+// TODO cuando se agregue el RETURN hay que descomentar la llamada:
+            //| LLAMADA:a {: RESULT = a; :}
             | EXPRESION:a MAS EXPRESION:b {: RESULT = new SumaExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MENOS EXPRESION:b {: RESULT = new RestaExpresion(a, b, aleft, aright); :}
             | EXPRESION:a MULT EXPRESION:b {: RESULT = new MultiplicacionExpresion(a, b, aleft, aright); :}

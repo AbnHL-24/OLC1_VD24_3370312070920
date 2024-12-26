@@ -22,6 +22,7 @@ public class Arbol {
         consola = "";
         this.errores = new LinkedList<>();
         this.tablaGlobal = new TablaSimbolos();
+        this.funciones = new LinkedList<>();
     }
 
     public void Print(String valor) {
