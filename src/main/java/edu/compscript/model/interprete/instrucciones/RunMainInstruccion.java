@@ -118,11 +118,11 @@ public class RunMainInstruccion extends Instruccion {
                             this.linea,
                             this.columna);
                 }
+            }
 
-                var resultadoMetodo = metodoInstruccion.interpretar(arbol, nuevaTabla);
-                if (resultadoMetodo instanceof ErroresExpresiones) {
-                    return resultadoMetodo;
-                }
+            var resultadoMetodo = metodoInstruccion.interpretar(arbol, nuevaTabla);
+            if (resultadoMetodo instanceof ErroresExpresiones) {
+                return resultadoMetodo;
             }
         }
         return null;

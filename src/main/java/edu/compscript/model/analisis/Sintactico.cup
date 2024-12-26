@@ -101,9 +101,9 @@ INSTRUCCIONES ::= INSTRUCCIONES:a INSTRUCCION:b {: RESULT = a; RESULT.add(b); :}
 ;
 
 INSTRUCCION ::= IMPRESION:a FIN_CADENA {: RESULT = a; :}
-              | RUN:a FIN_CADENA {: RESULT = a; :}
               | LLAMADA:a FIN_CADENA {: RESULT = a; :}
               | METODO:a {: RESULT = a; :}
+              | RUN:a FIN_CADENA {: RESULT = a; :}
               | MATCH:a {: RESULT = a; :}
               | AUTOINCREMENTO:a FIN_CADENA {: RESULT = a; :}
               | AUTODECREMENTO:a FIN_CADENA {: RESULT = a; :}

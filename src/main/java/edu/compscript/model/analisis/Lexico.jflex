@@ -147,19 +147,19 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {CASE_SIMBOL} { return new Symbol(sym.CASE_SIMBOL, yyline, yycolumn, yytext()); }
 <YYINITIAL> {VOID} { return new Symbol(sym.VOID, yyline, yycolumn, yytext()); }
 <YYINITIAL> {RUN_MAIN} { return new Symbol(sym.RUN_MAIN, yyline, yycolumn, yytext()); }
+// Comentarios y espacios en blanco.
+<YYINITIAL> "/*"([^*]|\*[^/])*"*"+"/" { /* Ignorar comentarios multilínea */ }
+<YYINITIAL> "//".*                    { /* Ignorar comentarios de una línea */ }
+<YYINITIAL> (\s)+                   { /**Ignorar*/ }
 // De ultimo lo que no es palabra reservada.
 <YYINITIAL> {CHAR} { return new Symbol(sym.CHAR, yyline, yycolumn, yytext()); }
 <YYINITIAL> {DECIMAL} { return new Symbol(sym.DECIMAL, yyline, yycolumn, yytext());  }
 <YYINITIAL> {ENTERO} { return new Symbol(sym.ENTERO, yyline, yycolumn, yytext());  }
 <YYINITIAL> {ID} { return new Symbol(sym.ID, yyline, yycolumn, yytext());  }
 <YYINITIAL> {CARACTER} { return new Symbol(sym.CARACTER, yyline, yycolumn, yytext());  }
-<YYINITIAL> {BLANCOS} {}
 <YYINITIAL> {CADENA} {String cadena = yytext();
                             cadena = cadena.substring(1, cadena.length()-1);
                             return new Symbol(sym.CADENA, yyline, yycolumn, cadena);  }
-// Comentarios.
-<YYINITIAL> "/*"([^*]|\*[^/])*"*"+"/" { /* Ignorar comentarios multilínea */ }
-<YYINITIAL> "//".*                    { /* Ignorar comentarios de una línea */ }
 
 
 // Errores lexicos.

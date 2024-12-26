@@ -152,7 +152,7 @@ public class EditorController {
 
             //Primer recorrido del AST, almacenamiento de métodos, funciones y structs.
             for (var a : ast.getInstrucciones()) {
-                if (a == null) continue; // Si es null no se ejecuta.
+                if (a == null) continue; // Si és null no se ejecuta.
 
                 if (a instanceof MetodoInstruccion) ast.agregarFunciones(a);
 

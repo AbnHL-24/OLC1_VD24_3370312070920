@@ -16,7 +16,7 @@ public class NativoExpresion extends Instruccion {
 
     @Override
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
-        // TODO Aqui se tiene que hacer lo de las secuencias de escape. Quizá se pueda hacer en el replace() para quitar las \t por cuatro espacios.
+        // FIXME Aqui se tiene que hacer lo de las secuencias de escape. Quizá se pueda hacer en el replace() para quitar las \t por cuatro espacios.
         if (this.tipo.getTipoDato() == TipoDato.CADENA) {
             String resultado = this.valor.toString();
             resultado = resultado.replace("\\t", "\t");
