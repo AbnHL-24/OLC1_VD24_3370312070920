@@ -30,12 +30,10 @@ public class IfElseIfInstruccion extends Instruccion {
         var condicion = this.condicion.interpretar(arbol, tabla);
         if (condicion instanceof ErroresExpresiones) return condicion;
 
-        if (this.condicion.tipo.getTipoDato() != TipoDato.BOOLEANO) {
-            return new ErroresExpresiones("SEMÁNTICO",
-                    "La condición del if no es booleana",
-                    this.linea,
-                    this.columna);
-        }
+        if (this.condicion.tipo.getTipoDato() != TipoDato.BOOLEANO) return new ErroresExpresiones("SEMÁNTICO",
+                "La condición del if no es booleana",
+                this.linea,
+                this.columna);
 
         var tablaLocal = new TablaSimbolos(tabla);
 

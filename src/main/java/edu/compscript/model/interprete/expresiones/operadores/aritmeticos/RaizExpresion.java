@@ -22,14 +22,19 @@ public class RaizExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         if (((Number) valorIzq).doubleValue() < 0) {
             return new ErroresExpresiones("SEMÁNTICO", "Raíz de un número negativo", linea, columna);
         }
         return switch (tipoResultado) {
             case ENTERO -> Math.pow(((Number) valorIzq).intValue(), 1.0 / ((Number) valorDer).intValue());
             case DECIMAL -> Math.pow(((Number) valorIzq).doubleValue(), 1.0 / ((Number) valorDer).doubleValue());
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación raíz entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación raíz entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

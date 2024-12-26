@@ -8,7 +8,10 @@ import edu.compscript.model.interprete.simbolo.TipoDato;
 
 public class MayorQueExpresion extends OperacionBinaria {
 
-    public MayorQueExpresion(Instruccion operadorIzq, Instruccion operadorDer, int linea, int columna) {
+    public MayorQueExpresion(Instruccion operadorIzq,
+                             Instruccion operadorDer,
+                             int linea,
+                             int columna) {
         super(operadorIzq, operadorDer, linea, columna);
     }
 
@@ -18,16 +21,17 @@ public class MayorQueExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
-        if (valorIzq instanceof Integer) {
-            valorIzq = ((Integer) valorIzq).doubleValue();
-        }
-        if (valorDer instanceof Integer) {
-            valorDer = ((Integer) valorDer).doubleValue();
-        }
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
+        if (valorIzq instanceof Integer) valorIzq = ((Integer) valorIzq).doubleValue();
+        if (valorDer instanceof Integer) valorDer = ((Integer) valorDer).doubleValue();
         return switch (tipoResultado) {
             case BOOLEANO -> ((Comparable) valorIzq).compareTo(valorDer) > 0;
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación mayor que entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación mayor que entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

@@ -35,17 +35,13 @@ public class MetodoInstruccion extends Instruccion {
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
         // Verifica si el LinkedList de instrucciones tiene errores.
         for (Instruccion instruccion : instrucciones) {
-            // FIXME verificar si es correcto el continue o es mejor retornar un error.
-            /*if (instruccion == null) {
-                continue;
-            }*/
-            // Verifica el valor recibido.
             var resultado = instruccion.interpretar(arbol, tabla);
             if (resultado instanceof ErroresExpresiones) {
                 return resultado;
             }
             // Valida el valor de la variable.
-            if (instruccion.tipo.getTipoDato()!=this.tipo.getTipoDato()) return new ErroresExpresiones("SEMANTICO",
+            if (instruccion.tipo.getTipoDato()!=this.tipo.getTipoDato())
+                return new ErroresExpresiones("SEMANTICO",
                     "El tipo de dato de la variable no coincide con el valor asignado.",
                     this.linea,
                     this.columna);

@@ -17,7 +17,10 @@ public class Simbolo {
     private Object valor;
     private Tipo tipo;
 
-    public Simbolo(boolean mutable, Tipo tipo, String id, Object valor) {
+    public Simbolo(boolean mutable,
+                   Tipo tipo,
+                   String id,
+                   Object valor) {
         this.mutable = mutable;
         this.tipo = tipo;
         this.id = id;

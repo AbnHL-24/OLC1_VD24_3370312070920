@@ -21,10 +21,15 @@ public class ModuloExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         return switch (tipoResultado) {
             case DECIMAL -> ((Number) valorIzq).doubleValue() % ((Number) valorDer).doubleValue();
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación modulo entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación modulo entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

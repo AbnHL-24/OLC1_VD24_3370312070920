@@ -9,7 +9,10 @@ import edu.compscript.model.interprete.simbolo.TipoDato;
 
 public class IgualacionExpresion extends OperacionBinaria {
 
-    public IgualacionExpresion(Instruccion operadorIzq, Instruccion operadorDer, int linea, int columna) {
+    public IgualacionExpresion(Instruccion operadorIzq,
+                               Instruccion operadorDer,
+                               int linea,
+                               int columna) {
         super(operadorIzq, operadorDer, linea, columna);
     }
 
@@ -19,10 +22,15 @@ public class IgualacionExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         return switch (tipoResultado) {
             case BOOLEANO -> valorIzq.equals(valorDer);
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación igualación entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación igualación entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

@@ -11,7 +11,8 @@ public abstract class Instruccion {
     public int linea;
     public int columna;
 
-    public abstract Object interpretar(Arbol arbol, TablaSimbolos tabla);
+    public abstract Object interpretar(Arbol arbol,
+                                       TablaSimbolos tabla);
 
     // Para compi 2 se agrega el método abstracto convertirACodigoTresDirecciones().
 }

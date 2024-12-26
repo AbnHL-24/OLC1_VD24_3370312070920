@@ -55,5 +55,7 @@ public abstract class OperacionBinaria extends Instruccion {
      * @param tipoResultado És el tipo de dato resultante de la operación.
      * @return Retorna el resultado de la operación.
      */
-    protected abstract Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado);
+    protected abstract Object realizarOperacion(Object valorIzq,
+                                                Object valorDer,
+                                                TipoDato tipoResultado);
 }

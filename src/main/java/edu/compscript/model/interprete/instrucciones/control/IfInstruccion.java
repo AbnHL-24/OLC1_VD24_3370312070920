@@ -38,12 +38,10 @@ public class IfInstruccion extends Instruccion {
         if (condicion instanceof ErroresExpresiones) return condicion;
 
         // La condicion siempre tiene que ser booleana.
-        if (this.condicion.tipo.getTipoDato() != TipoDato.BOOLEANO) {
-            return new ErroresExpresiones("SEMÁNTICO",
-                    "La condición del if no es booleana",
-                    this.linea,
-                    this.columna);
-        }
+        if (this.condicion.tipo.getTipoDato() != TipoDato.BOOLEANO) return new ErroresExpresiones("SEMÁNTICO",
+                "La condición del if no es booleana",
+                this.linea,
+                this.columna);
 
         // Aquí hay un bloque, hay que crear un nuevo entorno.
         var tablaLocal = new TablaSimbolos(tabla);

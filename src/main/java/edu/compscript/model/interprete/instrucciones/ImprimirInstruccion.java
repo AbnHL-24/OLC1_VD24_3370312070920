@@ -10,7 +10,9 @@ import edu.compscript.model.interprete.simbolo.TipoDato;
 public class ImprimirInstruccion extends Instruccion {
     private Instruccion expresion;
 
-    public ImprimirInstruccion(Instruccion expresion, int linea, int columna) {
+    public ImprimirInstruccion(Instruccion expresion,
+                               int linea,
+                               int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.expresion = expresion;
     }

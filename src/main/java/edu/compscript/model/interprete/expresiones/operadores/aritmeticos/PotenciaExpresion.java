@@ -21,11 +21,16 @@ public class PotenciaExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         return switch (tipoResultado) {
             case ENTERO -> Math.pow(((Number) valorIzq).intValue(), ((Number) valorDer).intValue());
             case DECIMAL -> Math.pow(((Number) valorIzq).doubleValue(), ((Number) valorDer).doubleValue());
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación potencia entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación potencia entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

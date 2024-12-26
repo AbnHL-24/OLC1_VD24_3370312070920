@@ -35,9 +35,7 @@ public class TablaSimbolos {
     public Simbolo getVariable(String id) {
         for (TablaSimbolos tabla = this; tabla != null; tabla = tabla.getTablaPadre()) {
             Simbolo busqueda = (Simbolo) tabla.getTablaActual().get(id.toLowerCase());
-            if (busqueda != null) {
-                return busqueda;
-            }
+            if (busqueda != null) return busqueda;
         }
         return null;
     }

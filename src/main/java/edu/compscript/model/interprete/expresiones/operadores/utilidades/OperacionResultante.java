@@ -21,9 +21,7 @@ public class OperacionResultante {
                                 int indexIzq,
                                 int indexDer) {
         // Verifica que los índices de indexIzq e indexDer no salgan del rango del Enum TipoDato.
-        if (indexIzq >= TABLA_TIPOS.length || indexDer >= TABLA_TIPOS[indexIzq].length) {
-            return null;
-        }
+        if (indexIzq >= TABLA_TIPOS.length || indexDer >= TABLA_TIPOS[indexIzq].length) return null;
 
         // Se retorna el tipo de operación resultante según la tabla recibida.
         return TABLA_TIPOS[indexIzq][indexDer];

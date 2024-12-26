@@ -7,7 +7,9 @@ import edu.compscript.model.interprete.simbolo.*;
 public class DecrementoExpresion extends Instruccion {
     private String id;
 
-    public DecrementoExpresion(String id, int linea, int columna) {
+    public DecrementoExpresion(String id,
+                               int linea,
+                               int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.id = id;
     }
@@ -16,12 +18,16 @@ public class DecrementoExpresion extends Instruccion {
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
         // Verifica que la variable exista.
         var variable = tabla.getVariable(id);
-        if (variable == null) return new ErroresExpresiones("SEMANTICO", "La variable " + id + " no ha sido declarada.", this.linea, this.columna);
+        if (variable == null) return new ErroresExpresiones("SEMANTICO",
+                "La variable " + id + " no ha sido declarada.",
+                this.linea,
+                this.columna);
 
         // Si no es mutable marca él error.
-        if (!variable.isMutable()) {
-            return new ErroresExpresiones("SEMANTICO", "La variable " + id + " es constante y no puede ser modificada.", this.linea, this.columna);
-        }
+        if (!variable.isMutable()) return new ErroresExpresiones("SEMANTICO",
+                "La variable " + id + " es constante y no puede ser modificada.",
+                this.linea,
+                this.columna);
 
         if (variable != null) {
             Object valor = variable.getValor();

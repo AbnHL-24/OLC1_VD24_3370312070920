@@ -24,12 +24,10 @@ public class RunMainInstruccion extends Instruccion {
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
         // Verificar que la función exista
         var busqueda = arbol.getFuncion(id);
-        if (busqueda == null) {
-            return new ErroresExpresiones("SEMANTICO",
-                    "No se encontró la función " + id,
-                    this.linea,
-                    this.columna);
-        }
+        if (busqueda == null) return new ErroresExpresiones("SEMANTICO",
+                "No se encontró la función " + id,
+                this.linea,
+                this.columna);
 
         // Verificando que la función sea una instancia de MetodoInstruccion.
         if (!(busqueda instanceof MetodoInstruccion metodoInstruccion)) {

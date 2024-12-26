@@ -11,14 +11,18 @@ public class AndExpresion extends Instruccion {
     private Instruccion operadorIzq;
     private Instruccion operadorDer;
 
-    public AndExpresion(Instruccion operadorIzq, Instruccion operadorDer, int linea, int columna) {
+    public AndExpresion(Instruccion operadorIzq,
+                        Instruccion operadorDer,
+                        int linea,
+                        int columna) {
         super(new Tipo(TipoDato.BOOLEANO), linea, columna);
         this.operadorIzq = operadorIzq;
         this.operadorDer = operadorDer;
     }
 
     @Override
-    public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
+    public Object interpretar(Arbol arbol,
+                              TablaSimbolos tabla) {
         var valorIzq = operadorIzq.interpretar(arbol, tabla);
         var valorDer = operadorDer.interpretar(arbol, tabla);
 
@@ -27,7 +31,10 @@ public class AndExpresion extends Instruccion {
         }
 
         if (operadorIzq.tipo.getTipoDato() != TipoDato.BOOLEANO || operadorDer.tipo.getTipoDato() != TipoDato.BOOLEANO) {
-            return new ErroresExpresiones("SEMÁNTICO", "Operación AND entre tipos no booleanos", linea, columna);
+            return new ErroresExpresiones("SEMÁNTICO",
+                    "Operación AND entre tipos no booleanos",
+                    linea,
+                    columna);
         }
 
         return (boolean) valorIzq && (boolean) valorDer;

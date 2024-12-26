@@ -16,7 +16,11 @@ public class MatchInstruccion extends Instruccion {
     private LinkedList<CaseInstruccion> casesList;
     private CaseInstruccion defaultInstrucciones;
 
-    public MatchInstruccion(Instruccion expresion, LinkedList<CaseInstruccion> casesList, CaseInstruccion defaultInstrucciones, int linea, int columna) {
+    public MatchInstruccion(Instruccion expresion,
+                            LinkedList<CaseInstruccion> casesList,
+                            CaseInstruccion defaultInstrucciones,
+                            int linea,
+                            int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.expresion = expresion;
         this.casesList = casesList;

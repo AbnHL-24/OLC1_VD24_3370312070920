@@ -153,21 +153,12 @@ public class EditorController {
             //Primer recorrido del AST, almacenamiento de métodos, funciones y structs.
             for (var a : ast.getInstrucciones()) {
                 if (a == null) continue; // Si és null no se ejecuta.
-
                 if (a instanceof MetodoInstruccion) ast.agregarFunciones(a);
 
-                // Llama al método interpretar de la instrucción.
-//                var res = a.interpretar(ast, tabla);
-//                  if (res instanceof ErroresExpresiones) {
-//                    this.listaErrores.add((ErroresExpresiones) res);
-//                }
-                //System.out.println(res);
             }
 
             // Segundo recorrido del AST, declaraciones y asignaciones.
             for (var a : ast.getInstrucciones()) {
-                //if (a == null) continue; // Si es null no se ejecuta.
-
                 // Llama al método interpretar de la instrucción.
                 if (a instanceof DeclaracionInstruccion) {
                     var res = a.interpretar(ast, tabla);
@@ -187,13 +178,6 @@ public class EditorController {
                 }
             }
             listaErrores.addAll(ast.getErrores());
-
-            // Buscar una instancia de main y ejecutamos el interpretar().
-
-
-            //System.out.println(ast.getConsola());
-
-            //System.out.println(ast);
             return ast.getConsola();
         } catch (Exception e) {
             System.out.println(e);

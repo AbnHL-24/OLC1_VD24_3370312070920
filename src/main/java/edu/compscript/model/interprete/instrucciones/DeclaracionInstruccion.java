@@ -8,8 +8,10 @@ import edu.compscript.model.interprete.simbolo.Simbolo;
 import edu.compscript.model.interprete.simbolo.TablaSimbolos;
 import edu.compscript.model.interprete.simbolo.Tipo;
 import lombok.Getter;
+import lombok.Setter;
 
 // Mutabilidad id: tipo = valor
+@Setter
 @Getter
 public class DeclaracionInstruccion extends Instruccion {
     private boolean mutable;
@@ -35,16 +37,19 @@ public class DeclaracionInstruccion extends Instruccion {
         if (valorInterpretado instanceof ErroresExpresiones) return valorInterpretado;
 
         // Verificar el valor de la variable.
-        if (this.valor.tipo.getTipoDato()!=this.tipo.getTipoDato()) {
-            return new ErroresExpresiones("SEMANTICO","El tipo de dato de la variable no coincide con el valor asignado.", this.linea, this.columna);
-        }
+        if (this.valor.tipo.getTipoDato()!=this.tipo.getTipoDato()) return new ErroresExpresiones("SEMANTICO",
+                    "El tipo de dato de la variable no coincide con el valor asignado.",
+                    this.linea,
+                    this.columna);
 
         // Validar la existencia de la variable y declararla.
-        if (tabla.setVariable(new Simbolo(mutable, this.tipo, this.id, valorInterpretado))) {
-            // Si se declaró la variable.
-            return null;
-        } else {
-            return new ErroresExpresiones("SEMANTICO","La variable " + this.id +" ya ha sido declarada.", this.linea, this.columna);
+        if (tabla.setVariable(new Simbolo(mutable, this.tipo, this.id, valorInterpretado)))
+            return null;// Si se declaró la variable.
+        else {
+            return new ErroresExpresiones("SEMANTICO",
+                    "La variable " + this.id +" ya ha sido declarada.",
+                    this.linea,
+                    this.columna);
         }
 
     }

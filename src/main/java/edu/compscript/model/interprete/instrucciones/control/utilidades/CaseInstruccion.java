@@ -16,7 +16,10 @@ public class CaseInstruccion extends Instruccion {
     private NativoExpresion caso;
     private LinkedList<Instruccion> instrucciones;
 
-    public CaseInstruccion(NativoExpresion caso, LinkedList<Instruccion> instrucciones, int linea, int columna) {
+    public CaseInstruccion(NativoExpresion caso,
+                           LinkedList<Instruccion> instrucciones,
+                           int linea,
+                           int columna) {
         super(new Tipo(TipoDato.VOID), linea, columna);
         this.caso = caso;
         this.instrucciones = instrucciones;

@@ -32,7 +32,10 @@ public class OrExpresion extends Instruccion {
         }
 
         if (operadorIzq.tipo.getTipoDato() != TipoDato.BOOLEANO || operadorDer.tipo.getTipoDato() != TipoDato.BOOLEANO) {
-            return new ErroresExpresiones("SEMÁNTICO", "Operación OR entre tipos no booleanos", linea, columna);
+            return new ErroresExpresiones("SEMÁNTICO",
+                    "Operación OR entre tipos no booleanos",
+                    linea,
+                    columna);
         }
 
         return (boolean) valorIzq || (boolean) valorDer;

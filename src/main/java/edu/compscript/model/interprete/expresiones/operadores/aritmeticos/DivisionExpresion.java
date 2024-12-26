@@ -21,14 +21,22 @@ public class DivisionExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         if (((Number) valorDer).doubleValue() == 0) {
-            return new ErroresExpresiones("SEMÁNTICO", "División por cero", linea, columna);
+            return new ErroresExpresiones("SEMÁNTICO",
+                    "División por cero",
+                    linea,
+                    columna);
         }
         return switch (tipoResultado) {
             case ENTERO -> ((Number) valorIzq).intValue() / ((Number) valorDer).intValue();
             case DECIMAL -> ((Number) valorIzq).doubleValue() / ((Number) valorDer).doubleValue();
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación división entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación división entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

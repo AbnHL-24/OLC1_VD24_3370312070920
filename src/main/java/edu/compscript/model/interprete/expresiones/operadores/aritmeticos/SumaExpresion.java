@@ -21,12 +21,17 @@ public class SumaExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         return switch (tipoResultado) {
             case ENTERO -> ((Number) valorIzq).intValue() + ((Number) valorDer).intValue();
             case DECIMAL -> ((Number) valorIzq).doubleValue() + ((Number) valorDer).doubleValue();
             case CADENA -> valorIzq.toString() + valorDer.toString();
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación suma entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación suma entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

@@ -9,7 +9,10 @@ import edu.compscript.model.interprete.simbolo.TipoDato;
 
 public class DiferenciacionExpresion extends OperacionBinaria {
 
-    public DiferenciacionExpresion(Instruccion operadorIzq, Instruccion operadorDer, int linea, int columna) {
+    public DiferenciacionExpresion(Instruccion operadorIzq,
+                                   Instruccion operadorDer,
+                                   int linea,
+                                   int columna) {
         super(operadorIzq, operadorDer, linea, columna);
     }
 
@@ -19,10 +22,15 @@ public class DiferenciacionExpresion extends OperacionBinaria {
     }
 
     @Override
-    protected Object realizarOperacion(Object valorIzq, Object valorDer, TipoDato tipoResultado) {
+    protected Object realizarOperacion(Object valorIzq,
+                                       Object valorDer,
+                                       TipoDato tipoResultado) {
         return switch (tipoResultado) {
             case BOOLEANO -> !valorIzq.equals(valorDer);
-            default -> new ErroresExpresiones("SEMÁNTICO", "Operación diferenciación entre tipos no soportada", linea, columna);
+            default -> new ErroresExpresiones("SEMÁNTICO",
+                    "Operación diferenciación entre tipos no soportada",
+                    linea,
+                    columna);
         };
     }
 }

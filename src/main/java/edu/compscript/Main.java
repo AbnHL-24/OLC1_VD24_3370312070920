@@ -14,7 +14,6 @@ public class Main {
             EditorView view = new EditorView();
             EditorController controller = new EditorController(view);
             controller.initController(); // Inicializa el controlador
-            //view.mostrarInterfaz(); // Muestra la interfaz gráfica
         });
     }
 }
