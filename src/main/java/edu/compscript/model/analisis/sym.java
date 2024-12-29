@@ -8,6 +8,7 @@ package edu.compscript.model.analisis;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
+  public static final int CAST = 55;
   public static final int POW = 14;
   public static final int MULT = 12;
   public static final int CONST = 38;
@@ -34,6 +35,7 @@ public class sym {
   public static final int EOF = 0;
   public static final int DECIMAL = 4;
   public static final int PARENT_IZQ = 17;
+  public static final int RETURN = 54;
   public static final int TRUE = 42;
   public static final int DECREMENTO = 9;
   public static final int error = 1;
@@ -57,6 +59,7 @@ public class sym {
   public static final int ROOT = 15;
   public static final int STRING = 32;
   public static final int MENOR_IGUAL = 26;
+  public static final int AS = 56;
   public static final int FALSE = 43;
   public static final int PARENT_DER = 18;
   public static final int CONSOLE = 29;
@@ -116,7 +119,10 @@ public class sym {
   "CASE_SIMBOL",
   "VOID",
   "COMA",
-  "RUN_MAIN"
+  "RUN_MAIN",
+  "RETURN",
+  "CAST",
+  "AS"
   };
 }
 

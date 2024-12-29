@@ -40,11 +40,11 @@ public class MetodoInstruccion extends Instruccion {
                 return resultado;
             }
             // Valida el valor de la variable.
-            if (instruccion.tipo.getTipoDato()!=this.tipo.getTipoDato())
+            /*if (instruccion.tipo.getTipoDato()!=this.tipo.getTipoDato())
                 return new ErroresExpresiones("SEMANTICO",
                     "El tipo de dato de la variable no coincide con el valor asignado.",
                     this.linea,
-                    this.columna);
+                    this.columna);*/
         }
         return null;
     }

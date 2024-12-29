@@ -60,7 +60,8 @@ terminal STRING, INT, DOUBLE, BOOLEANO, CHAR;
 terminal LET, CONST, DOS_PUNTOS, ASIGNACION, FOR;
 terminal TRUE, FALSE, IF, ELSE, LLAVE_IZQ, LLAVE_DER;
 terminal MATCH_LEX, DEFAULT_LEX, CASE_SIMBOL;
-terminal VOID, COMA, RUN_MAIN;
+terminal VOID, COMA, RUN_MAIN, RETURN;
+terminal CAST, AS;
 
 nonterminal LinkedList<Instruccion> INICIO, INSTRUCCIONES;
 nonterminal Boolean MUTABILIDAD;
@@ -75,6 +76,7 @@ nonterminal Instruccion METODO;
 nonterminal LinkedList<HashMap> PARAMS, PARAMSCALL;
 nonterminal Instruccion RUN, LLAMADA;
 nonterminal HashMap<String, Object> PARAM;
+nonterminal Instruccion CASTEO;
 
 //  Precedencias.
 precedence left ELSE;
@@ -219,7 +221,11 @@ EXPRESION ::= MENOS EXPRESION:a {: RESULT = new NegacionUnariaExpresion(a, aleft
             | PARENT_IZQ EXPRESION:a PARENT_DER {: RESULT = a; :}
             | ID:a {: RESULT = new AccesoVariableExpresion(a, aleft, aright); :}
             | EXPRESIONES_NATIVAS:a {: RESULT = a; :}
+            |CASTEO:a {: RESULT = a; :}
 
+;
+
+CASTEO ::= CAST PARENT_IZQ EXPRESION:a AS TIPOS:b PARENT_DER {: RESULT = new CastExpresion(a, b, aleft, aright); :}
 ;
 
 // Nativo(Object valor, Tipo tipo, int linea, int columna)

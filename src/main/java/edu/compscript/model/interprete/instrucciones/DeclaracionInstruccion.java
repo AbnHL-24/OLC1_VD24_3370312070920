@@ -16,28 +16,28 @@ import lombok.Setter;
 public class DeclaracionInstruccion extends Instruccion {
     private boolean mutable;
     private String id;
-    private Instruccion valor;
+    private Instruccion instruccion;
 
     public DeclaracionInstruccion(boolean mutable,
                                   String id,
-                                  Instruccion valor,
+                                  Instruccion instruccion,
                                   Tipo tipo,
                                   int linea,
                                   int columna) {
         super(tipo, linea, columna);
         this.mutable = mutable;
         this.id = id;
-        this.valor = valor != null ? valor : new NativoExpresion(this.tipo.getTipoDato().getValorPredeterminado(), tipo, linea, columna);
+        this.instruccion = instruccion != null ? instruccion : new NativoExpresion(this.tipo.getTipoDato().getValorPredeterminado(), tipo, linea, columna);
     }
 
     @Override
     public Object interpretar(Arbol arbol, TablaSimbolos tabla) {
         // Verificar el valor recibido.
-        var valorInterpretado = this.valor.interpretar(arbol, tabla);
+        var valorInterpretado = this.instruccion.interpretar(arbol, tabla);
         if (valorInterpretado instanceof ErroresExpresiones) return valorInterpretado;
 
         // Verificar el valor de la variable.
-        if (this.valor.tipo.getTipoDato()!=this.tipo.getTipoDato()) return new ErroresExpresiones("SEMANTICO",
+        if (this.instruccion.tipo.getTipoDato()!=this.tipo.getTipoDato()) return new ErroresExpresiones("SEMANTICO",
                     "El tipo de dato de la variable no coincide con el valor asignado.",
                     this.linea,
                     this.columna);

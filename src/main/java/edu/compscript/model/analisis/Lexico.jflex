@@ -65,6 +65,8 @@ DECREMENTO = "--"
 VOID = "void"
 RUN_MAIN = "RUN_MAIN"
 RETURN = "return"
+CAST = "cast"
+AS = "as"
 
 // Operadores aritméticos
 MAS = "+"
@@ -149,6 +151,8 @@ ID = [a-zA-Z][a-zA-Z0-9_]*
 <YYINITIAL> {VOID} { return new Symbol(sym.VOID, yyline, yycolumn, yytext()); }
 <YYINITIAL> {RUN_MAIN} { return new Symbol(sym.RUN_MAIN, yyline, yycolumn, yytext()); }
 <YYINITIAL> {RETURN} { return new Symbol(sym.RETURN, yyline, yycolumn, yytext()); }
+<YYINITIAL> {CAST} { return new Symbol(sym.CAST, yyline, yycolumn, yytext()); }
+<YYINITIAL> {AS} { return new Symbol(sym.AS, yyline, yycolumn, yytext()); }
 // Comentarios y espacios en blanco.
 <YYINITIAL> "/*"([^*]|\*[^/])*"*"+"/" { /* Ignorar comentarios multilínea */ }
 <YYINITIAL> "//".*                    { /* Ignorar comentarios de una línea */ }
